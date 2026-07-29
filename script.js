@@ -1,12 +1,13 @@
 /**
  * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3)
- * Correção dos dados dos jogadores, cálculo diário dinâmico por dia da semana e 3 rankings distintos.
+ * Com persistência forçada no LocalStorage e tratamento de erros.
  */
 
 const STORAGE_KEY = 'ddtank_guild_manager_v3_db';
 
 let state = {
-    players: []
+    players: [],
+    history: {}
 };
 
 let selectedDate = '';
@@ -43,26 +44,31 @@ const closeModalBtn = document.querySelector('.close-modal');
 
 document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
-    currentDateInput.value = today;
+    if (currentDateInput) {
+        currentDateInput.value = today;
+    }
     selectedDate = today;
 
+    // Carrega dados salvos antes de renderizar
     loadFromLocalStorage();
 
-    currentDateInput.addEventListener('change', (e) => {
-        selectedDate = e.target.value;
-        renderApp();
-    });
+    if (currentDateInput) {
+        currentDateInput.addEventListener('change', (e) => {
+            selectedDate = e.target.value;
+            renderApp();
+        });
+    }
 
-    addPlayerForm.addEventListener('submit', handleAddPlayer);
+    if (addPlayerForm) addPlayerForm.addEventListener('submit', handleAddPlayer);
     if (searchPlayerInput) searchPlayerInput.addEventListener('input', renderMainTable);
 
-    btnExport.addEventListener('click', exportDataToJSON);
-    importFileInput.addEventListener('change', importDataFromJSON);
-    btnResetDay.addEventListener('click', handleResetDay);
+    if (btnExport) btnExport.addEventListener('click', exportDataToJSON);
+    if (importFileInput) importFileInput.addEventListener('change', importDataFromJSON);
+    if (btnResetDay) btnResetDay.addEventListener('click', handleResetDay);
 
-    btnRankTotal.addEventListener('click', () => setRankingMode('total', btnRankTotal));
-    btnRankPrev.addEventListener('click', () => setRankingMode('prev', btnRankPrev));
-    btnRankWeek.addEventListener('click', () => setRankingMode('week', btnRankWeek));
+    if (btnRankTotal) btnRankTotal.addEventListener('click', () => setRankingMode('total', btnRankTotal));
+    if (btnRankPrev) btnRankPrev.addEventListener('click', () => setRankingMode('prev', btnRankPrev));
+    if (btnRankWeek) btnRankWeek.addEventListener('click', () => setRankingMode('week', btnRankWeek));
 
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', () => playerModal.style.display = 'none');
@@ -76,24 +82,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setRankingMode(mode, activeBtn) {
     currentRankingMode = mode;
-    [btnRankTotal, btnRankPrev, btnRankWeek].forEach(btn => btn.classList.remove('active'));
-    activeBtn.classList.add('active');
+    [btnRankTotal, btnRankPrev, btnRankWeek].forEach(btn => btn && btn.classList.remove('active'));
+    if (activeBtn) activeBtn.classList.add('active');
     renderRanking();
 }
 
 function loadFromLocalStorage() {
-    const data = localStorage.getItem(STORAGE_KEY);
-    if (data) {
-        try {
-            state = JSON.parse(data);
-        } catch (e) {
-            state = { players: [] };
+    try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+            const parsed = JSON.parse(data);
+            if (parsed && Array.isArray(parsed.players)) {
+                state = parsed;
+            }
         }
+    } catch (e) {
+        console.error("Erro ao carregar dados do LocalStorage:", e);
     }
 }
 
 function saveToLocalStorage() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+        console.error("Erro ao salvar no LocalStorage:", e);
+        alert("Atenção: Seu navegador não permitiu salvar os dados localmente. Verifique se está em Modo Anônimo.");
+    }
 }
 
 function getWeekDates(dateString) {
@@ -128,6 +142,7 @@ function handleAddPlayer(e) {
         prevWeekHistory: {}
     };
 
+    if (!state.players) state.players = [];
     state.players.push(newPlayer);
     saveToLocalStorage();
     playerNameInput.value = '';
@@ -157,12 +172,13 @@ function deletePlayer(id) {
     }
 }
 
-// Atualiza e calcula a contribuição do dia específico
 function saveDailyInput(playerId, dateKey) {
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
 
     const inputEl = document.getElementById(`day_input_${playerId}_${dateKey}`);
+    if (!inputEl) return;
+
     const newEnteredTotal = parseInt(inputEl.value) || 0;
 
     if (!player.dailyHistory) player.dailyHistory = {};
@@ -175,7 +191,7 @@ function saveDailyInput(playerId, dateKey) {
 
     player.dailyHistory[dateKey] = calculatedDaily;
     player.totalHistory[dateKey] = newEnteredTotal;
-    player.contribTotal = newEnteredTotal; // Atualiza a contribuição total acumulada
+    player.contribTotal = newEnteredTotal;
 
     saveToLocalStorage();
     renderApp();
@@ -188,8 +204,8 @@ function updateMainPlayerTotals(playerId) {
     const totEl = document.getElementById(`tot_${playerId}`);
     const prevEl = document.getElementById(`prev_${playerId}`);
 
-    player.contribTotal = parseInt(totEl.value) || 0;
-    player.contribSemanaAnterior = parseInt(prevEl.value) || 0;
+    if (totEl) player.contribTotal = parseInt(totEl.value) || 0;
+    if (prevEl) player.contribSemanaAnterior = parseInt(prevEl.value) || 0;
 
     saveToLocalStorage();
     renderApp();
@@ -197,7 +213,7 @@ function updateMainPlayerTotals(playerId) {
 
 function handleResetDay() {
     if (confirm(`Deseja zerar os registros da data ${selectedDate}?`)) {
-        state.players.forEach(p => {
+        (state.players || []).forEach(p => {
             if (p.dailyHistory) delete p.dailyHistory[selectedDate];
         });
         saveToLocalStorage();
@@ -220,7 +236,7 @@ function renderMainTable() {
     const filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
 
     if (filtered.length === 0) {
-        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador encontrado.</td></tr>`;
+        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado. Clique em "Importar JSON".</td></tr>`;
         return;
     }
 
@@ -294,7 +310,7 @@ function renderRanking() {
     rankingData.sort((a, b) => b.rankValue - a.rankValue);
 
     if (rankingData.length === 0) {
-        rankingTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Sem dados.</td></tr>`;
+        rankingTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Sem dados para o ranking.</td></tr>`;
         return;
     }
 
@@ -394,10 +410,13 @@ function importDataFromJSON(e) {
 
             if (playersToImport.length > 0) {
                 if (confirm(`Importar ${playersToImport.length} jogadores?`)) {
-                    state = { players: playersToImport, history: importedData.history || {} };
-                    saveToLocalStorage();
+                    state = {
+                        players: playersToImport,
+                        history: importedData.history || {}
+                    };
+                    saveToLocalStorage(); // Salva IMEDIATAMENTE no navegador
                     renderApp();
-                    alert("Dados importados com sucesso!");
+                    alert("Dados importados e salvos no navegador com sucesso!");
                 }
             } else {
                 alert("Nenhum jogador encontrado no arquivo.");
@@ -405,6 +424,8 @@ function importDataFromJSON(e) {
         } catch (error) {
             alert("Erro ao ler o arquivo JSON.");
         }
+        // Limpa o input do arquivo para permitir reimportações
+        e.target.value = '';
     };
     fileReader.readAsText(file);
 }
