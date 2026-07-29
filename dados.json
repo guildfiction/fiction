@@ -6,8 +6,9 @@
       "contribTotal": 21901,
       "contribSemanaAnterior": 8187,
       "dailyHistory": {
-        "2026-07-28": 0,
-        "2026-07-29": 0
+        "2026-07-28": 167,
+        "2026-07-29": 0,
+        "2026-07-27": 3619
       },
       "totalHistory": {
         "2026-07-28": 21901,
@@ -16,7 +17,7 @@
       "prevWeekHistory": {
         "2026-07-28": 8187
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_2",
@@ -24,15 +25,16 @@
       "contribTotal": 57412,
       "contribSemanaAnterior": 5084,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 40,
+        "2026-07-27": 1227
       },
       "totalHistory": {
-        "2026-07-28": 57372
+        "2026-07-28": 57412
       },
       "prevWeekHistory": {
         "2026-07-28": 5084
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_4",
@@ -40,15 +42,16 @@
       "contribTotal": 30000,
       "contribSemanaAnterior": 8705,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 1489,
+        "2026-07-27": 3989
       },
       "totalHistory": {
-        "2026-07-28": 28511
+        "2026-07-28": 30000
       },
       "prevWeekHistory": {
         "2026-07-28": 8705
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_5",
@@ -56,15 +59,16 @@
       "contribTotal": 22634,
       "contribSemanaAnterior": 6156,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 794,
+        "2026-07-27": 1410
       },
       "totalHistory": {
-        "2026-07-28": 21840
+        "2026-07-28": 22634
       },
       "prevWeekHistory": {
         "2026-07-28": 6156
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_6",
@@ -72,15 +76,16 @@
       "contribTotal": 12570,
       "contribSemanaAnterior": 4161,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 1,
+        "2026-07-27": 1438
       },
       "totalHistory": {
-        "2026-07-28": 12569
+        "2026-07-28": 12570
       },
       "prevWeekHistory": {
         "2026-07-28": 4161
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_7",
@@ -88,15 +93,16 @@
       "contribTotal": 5861,
       "contribSemanaAnterior": 3113,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 139,
+        "2026-07-27": 547
       },
       "totalHistory": {
-        "2026-07-28": 5722
+        "2026-07-28": 5861
       },
       "prevWeekHistory": {
         "2026-07-28": 3113
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_8",
@@ -104,15 +110,16 @@
       "contribTotal": 17861,
       "contribSemanaAnterior": 3727,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 456,
+        "2026-07-27": 3271
       },
       "totalHistory": {
-        "2026-07-28": 17405
+        "2026-07-28": 17861
       },
       "prevWeekHistory": {
         "2026-07-28": 3727
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_9",
@@ -120,7 +127,8 @@
       "contribTotal": 15795,
       "contribSemanaAnterior": 4807,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 3938
       },
       "totalHistory": {
         "2026-07-28": 15795
@@ -128,7 +136,7 @@
       "prevWeekHistory": {
         "2026-07-28": 4807
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_10",
@@ -136,15 +144,16 @@
       "contribTotal": 2006,
       "contribSemanaAnterior": 515,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 50,
+        "2026-07-27": 1441
       },
       "totalHistory": {
-        "2026-07-28": 1956
+        "2026-07-28": 2006
       },
       "prevWeekHistory": {
         "2026-07-28": 515
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_11",
@@ -152,15 +161,16 @@
       "contribTotal": 1485,
       "contribSemanaAnterior": 822,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 205,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 1280
+        "2026-07-28": 1485
       },
       "prevWeekHistory": {
         "2026-07-28": 822
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_12",
@@ -168,15 +178,16 @@
       "contribTotal": 7569,
       "contribSemanaAnterior": 6718,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 674,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 6895
+        "2026-07-28": 7569
       },
       "prevWeekHistory": {
         "2026-07-28": 6718
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_13",
@@ -184,15 +195,16 @@
       "contribTotal": 30792,
       "contribSemanaAnterior": 3204,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 5,
+        "2026-07-27": 1100
       },
       "totalHistory": {
-        "2026-07-28": 30787
+        "2026-07-28": 30792
       },
       "prevWeekHistory": {
         "2026-07-28": 3204
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_14",
@@ -200,15 +212,16 @@
       "contribTotal": 4957,
       "contribSemanaAnterior": 2679,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 1139,
+        "2026-07-27": 1139
       },
       "totalHistory": {
-        "2026-07-28": 3818
+        "2026-07-28": 4957
       },
       "prevWeekHistory": {
         "2026-07-28": 2679
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_15",
@@ -216,15 +229,16 @@
       "contribTotal": 16641,
       "contribSemanaAnterior": 2478,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 4,
+        "2026-07-27": 1155
       },
       "totalHistory": {
-        "2026-07-28": 16637
+        "2026-07-28": 16641
       },
       "prevWeekHistory": {
         "2026-07-28": 2478
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_16",
@@ -232,7 +246,8 @@
       "contribTotal": 16464,
       "contribSemanaAnterior": 3376,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 110
       },
       "totalHistory": {
         "2026-07-28": 16464
@@ -240,7 +255,7 @@
       "prevWeekHistory": {
         "2026-07-28": 3376
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_17",
@@ -248,7 +263,8 @@
       "contribTotal": 13736,
       "contribSemanaAnterior": 2385,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 6
       },
       "totalHistory": {
         "2026-07-28": 13736
@@ -256,7 +272,7 @@
       "prevWeekHistory": {
         "2026-07-28": 2385
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_18",
@@ -264,15 +280,16 @@
       "contribTotal": 280,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 26,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 254
+        "2026-07-28": 280
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_19",
@@ -280,15 +297,16 @@
       "contribTotal": 4373,
       "contribSemanaAnterior": 3607,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 203,
+        "2026-07-27": 425
       },
       "totalHistory": {
-        "2026-07-28": 4170
+        "2026-07-28": 4373
       },
       "prevWeekHistory": {
         "2026-07-28": 3607
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_20",
@@ -296,15 +314,16 @@
       "contribTotal": 22891,
       "contribSemanaAnterior": 5971,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 349,
+        "2026-07-27": 1008
       },
       "totalHistory": {
-        "2026-07-28": 22542
+        "2026-07-28": 22891
       },
       "prevWeekHistory": {
         "2026-07-28": 5971
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_21",
@@ -312,15 +331,16 @@
       "contribTotal": 7956,
       "contribSemanaAnterior": 5091,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 25,
+        "2026-07-27": 1601
       },
       "totalHistory": {
-        "2026-07-28": 7931
+        "2026-07-28": 7956
       },
       "prevWeekHistory": {
         "2026-07-28": 5091
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_22",
@@ -328,15 +348,16 @@
       "contribTotal": 10119,
       "contribSemanaAnterior": 2173,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 362,
+        "2026-07-27": 1128
       },
       "totalHistory": {
-        "2026-07-28": 9757
+        "2026-07-28": 10119
       },
       "prevWeekHistory": {
         "2026-07-28": 2173
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_23",
@@ -344,7 +365,8 @@
       "contribTotal": 9152,
       "contribSemanaAnterior": 94,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 0
       },
       "totalHistory": {
         "2026-07-28": 9152
@@ -352,7 +374,7 @@
       "prevWeekHistory": {
         "2026-07-28": 94
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_24",
@@ -360,7 +382,8 @@
       "contribTotal": 4484,
       "contribSemanaAnterior": 3885,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 599
       },
       "totalHistory": {
         "2026-07-28": 4484
@@ -368,7 +391,7 @@
       "prevWeekHistory": {
         "2026-07-28": 3885
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_25",
@@ -376,15 +399,16 @@
       "contribTotal": 9035,
       "contribSemanaAnterior": 901,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 496,
+        "2026-07-27": 261
       },
       "totalHistory": {
-        "2026-07-28": 8539
+        "2026-07-28": 9035
       },
       "prevWeekHistory": {
         "2026-07-28": 901
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_26",
@@ -392,15 +416,16 @@
       "contribTotal": 693,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 407,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 286
+        "2026-07-28": 693
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_27",
@@ -408,15 +433,16 @@
       "contribTotal": 909,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 757,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 152
+        "2026-07-28": 909
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_28",
@@ -424,15 +450,16 @@
       "contribTotal": 2848,
       "contribSemanaAnterior": 618,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 389,
+        "2026-07-27": 285
       },
       "totalHistory": {
-        "2026-07-28": 2459
+        "2026-07-28": 2848
       },
       "prevWeekHistory": {
         "2026-07-28": 618
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_29",
@@ -440,15 +467,16 @@
       "contribTotal": 19855,
       "contribSemanaAnterior": 3567,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 331,
+        "2026-07-27": 8795
       },
       "totalHistory": {
-        "2026-07-28": 19524
+        "2026-07-28": 19855
       },
       "prevWeekHistory": {
         "2026-07-28": 3567
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_30",
@@ -456,7 +484,8 @@
       "contribTotal": 6162,
       "contribSemanaAnterior": 1479,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 0
       },
       "totalHistory": {
         "2026-07-28": 6162
@@ -464,7 +493,7 @@
       "prevWeekHistory": {
         "2026-07-28": 1479
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_31",
@@ -472,15 +501,16 @@
       "contribTotal": 9972,
       "contribSemanaAnterior": 3634,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 40,
+        "2026-07-27": 1367
       },
       "totalHistory": {
-        "2026-07-28": 9932
+        "2026-07-28": 9972
       },
       "prevWeekHistory": {
         "2026-07-28": 3634
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_32",
@@ -488,15 +518,16 @@
       "contribTotal": 5364,
       "contribSemanaAnterior": 3831,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 415,
+        "2026-07-27": 1035
       },
       "totalHistory": {
-        "2026-07-28": 4949
+        "2026-07-28": 5364
       },
       "prevWeekHistory": {
         "2026-07-28": 3831
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_34",
@@ -504,7 +535,8 @@
       "contribTotal": 10343,
       "contribSemanaAnterior": 3055,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 266
       },
       "totalHistory": {
         "2026-07-28": 10343
@@ -512,7 +544,7 @@
       "prevWeekHistory": {
         "2026-07-28": 3055
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_35",
@@ -520,15 +552,16 @@
       "contribTotal": 11704,
       "contribSemanaAnterior": 3520,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 176,
+        "2026-07-27": 203
       },
       "totalHistory": {
-        "2026-07-28": 11528
+        "2026-07-28": 11704
       },
       "prevWeekHistory": {
         "2026-07-28": 3520
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_36",
@@ -536,15 +569,16 @@
       "contribTotal": 2571,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 129,
+        "2026-07-27": 2442
       },
       "totalHistory": {
-        "2026-07-28": 2442
+        "2026-07-28": 2571
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_37",
@@ -552,7 +586,8 @@
       "contribTotal": 7288,
       "contribSemanaAnterior": 4827,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 0
       },
       "totalHistory": {
         "2026-07-28": 7288
@@ -560,7 +595,7 @@
       "prevWeekHistory": {
         "2026-07-28": 4827
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_38",
@@ -568,7 +603,8 @@
       "contribTotal": 8217,
       "contribSemanaAnterior": 1839,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 5
       },
       "totalHistory": {
         "2026-07-28": 8217
@@ -576,7 +612,7 @@
       "prevWeekHistory": {
         "2026-07-28": 1839
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_40",
@@ -584,15 +620,16 @@
       "contribTotal": 8342,
       "contribSemanaAnterior": 6090,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 1103,
+        "2026-07-27": 1149
       },
       "totalHistory": {
-        "2026-07-28": 7239
+        "2026-07-28": 8342
       },
       "prevWeekHistory": {
         "2026-07-28": 6090
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_41",
@@ -600,7 +637,8 @@
       "contribTotal": 6074,
       "contribSemanaAnterior": 2804,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 0
       },
       "totalHistory": {
         "2026-07-28": 6074
@@ -608,7 +646,7 @@
       "prevWeekHistory": {
         "2026-07-28": 2804
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_42",
@@ -616,7 +654,8 @@
       "contribTotal": 6963,
       "contribSemanaAnterior": 111,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 185
       },
       "totalHistory": {
         "2026-07-28": 6963
@@ -624,7 +663,7 @@
       "prevWeekHistory": {
         "2026-07-28": 111
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_43",
@@ -632,15 +671,16 @@
       "contribTotal": 10996,
       "contribSemanaAnterior": 2669,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 154,
+        "2026-07-27": 6825
       },
       "totalHistory": {
-        "2026-07-28": 10842
+        "2026-07-28": 10996
       },
       "prevWeekHistory": {
         "2026-07-28": 2669
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_44",
@@ -648,15 +688,16 @@
       "contribTotal": 1632,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 695,
+        "2026-07-27": 759
       },
       "totalHistory": {
-        "2026-07-28": 937
+        "2026-07-28": 1632
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_45",
@@ -664,15 +705,16 @@
       "contribTotal": 1672,
       "contribSemanaAnterior": 0,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 735,
+        "2026-07-27": 759
       },
       "totalHistory": {
-        "2026-07-28": 937
+        "2026-07-28": 1672
       },
       "prevWeekHistory": {
         "2026-07-28": 0
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_46",
@@ -680,7 +722,8 @@
       "contribTotal": 1983,
       "contribSemanaAnterior": 1135,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 0,
+        "2026-07-27": 662
       },
       "totalHistory": {
         "2026-07-28": 1983
@@ -688,7 +731,7 @@
       "prevWeekHistory": {
         "2026-07-28": 1135
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_47",
@@ -696,63 +739,105 @@
       "contribTotal": 2800,
       "contribSemanaAnterior": 138,
       "dailyHistory": {
-        "2026-07-28": 0
+        "2026-07-28": 638,
+        "2026-07-27": 0
       },
       "totalHistory": {
-        "2026-07-28": 2162
+        "2026-07-28": 2800
       },
       "prevWeekHistory": {
         "2026-07-28": 138
       },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_1785332427639",
       "name": "AKAZA",
       "contribTotal": 39564,
       "contribSemanaAnterior": 3450,
-      "dailyHistory": {},
-      "totalHistory": {},
-      "prevWeekHistory": {}
+      "dailyHistory": {
+        "2026-07-27": 0,
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 39564
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3450
+      },
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_1785332883967",
       "name": "PELÉBRANCO",
       "contribTotal": 297,
       "contribSemanaAnterior": 0,
-      "dailyHistory": {},
-      "totalHistory": {},
-      "prevWeekHistory": {}
+      "dailyHistory": {
+        "2026-07-27": 0,
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 297
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_1785333028307",
       "name": "Surspirão",
       "contribTotal": 177,
       "contribSemanaAnterior": 0,
-      "dailyHistory": {},
-      "totalHistory": {},
-      "prevWeekHistory": {}
+      "dailyHistory": {
+        "2026-07-27": 0,
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 177
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_1785333197834",
       "name": "Alfredo",
       "contribTotal": 2805,
       "contribSemanaAnterior": 1814,
-      "dailyHistory": {},
-      "totalHistory": {},
-      "prevWeekHistory": {}
+      "dailyHistory": {
+        "2026-07-27": 0,
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 2805
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 1814
+      },
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     },
     {
       "id": "p_1785347791031",
       "name": "Zyrox",
       "contribTotal": 0,
       "contribSemanaAnterior": 0,
-      "dailyHistory": {},
-      "totalHistory": {},
-      "prevWeekHistory": {}
+      "dailyHistory": {
+        "2026-07-27": 0,
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 0
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-29T17:00:00.000Z"
     }
   ],
   "history": {
+    "2026-07-27": {},
     "2026-07-28": {}
   }
 }
