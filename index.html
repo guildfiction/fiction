@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Contribuição de Guilda - DDTank</title>
+    <title>FICTION - SurfTank</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,10 +11,15 @@
 
     <header class="app-header">
         <div class="header-container">
-            <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> Guilda DDTank</h1>
-            <div class="date-picker-wrapper">
-                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data de Referência:</label>
-                <input type="date" id="currentDate">
+            <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> SOCIEDADE FICTION</h1>
+            
+            <div class="header-right">
+                <div class="date-picker-wrapper">
+                    <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data:</label>
+                    <input type="date" id="currentDate">
+                </div>
+                <!-- Botão de Login Admin -->
+                <button id="btnAdminLogin" class="btn btn-warning"><i class="fa-solid fa-lock"></i> Modo Leitor</button>
             </div>
         </div>
     </header>
@@ -59,8 +64,8 @@
             </div>
         </section>
 
-        <!-- Barra de Ações & Backup -->
-        <section class="actions-bar">
+        <!-- Barra de Ações & Backup (Apenas Admin) -->
+        <section class="actions-bar admin-only">
             <div class="backup-controls">
                 <button id="btnExport" class="btn btn-secondary"><i class="fa-solid fa-download"></i> Exportar JSON</button>
                 <label for="importFile" class="btn btn-secondary"><i class="fa-solid fa-upload"></i> Importar JSON</label>
@@ -74,7 +79,7 @@
             <h2><i class="fa-solid fa-list-check"></i> Registro Diário & Controle da Semana</h2>
             
             <div class="panel-header-controls">
-                <form id="addPlayerForm" class="form-row">
+                <form id="addPlayerForm" class="form-row admin-only">
                     <input type="text" id="playerNameInput" placeholder="Nome do Jogador" required>
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar Membro</button>
                 </form>
@@ -100,7 +105,7 @@
                             <th>Sáb</th>
                             <th>Dom</th>
                             <th class="col-highlight">Total Sem.</th>
-                            <th>Ações</th>
+                            <th class="admin-only">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="mainTableBody">
@@ -110,7 +115,7 @@
             </div>
         </section>
 
-        <!-- Seção de Rankings Diferenciados -->
+        <!-- Seção de Rankings -->
         <section class="panel full-width">
             <div class="ranking-header">
                 <h2><i class="fa-solid fa-trophy"></i> Rankings da Guilda</h2>
