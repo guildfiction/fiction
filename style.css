@@ -411,3 +411,24 @@ input[type="text"]:focus, input[type="number"]:focus {
     font-size: 0.85rem;
     margin-top: auto;
 }
+
+/* Estilos para Controle de Permissão Admin/Leitor */
+body:not(.is-admin) .admin-only {
+    display: none !important;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-warning {
+    background-color: var(--primary-gold);
+    color: #000;
+}
+
+.btn-warning:hover {
+    background-color: var(--primary-gold-hover);
+}
