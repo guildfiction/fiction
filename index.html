@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Contribuição de Guilda - DDTank</title>
+    <title>Controle de Contribuição de Guilda - DDTank</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Ícones via FontAwesome (CDN) -->
+    <!-- Ícones via FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
         <div class="header-container">
             <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> Guilda DDTank</h1>
             <div class="date-picker-wrapper">
-                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data:</label>
+                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data do Registro:</label>
                 <input type="date" id="currentDate">
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="stat-card">
                 <i class="fa-solid fa-users icon"></i>
                 <div class="stat-info">
-                    <span class="stat-label">Membros Cadastrados</span>
+                    <span class="stat-label">Jogadores Cadastrados</span>
                     <span id="statTotalPlayers" class="stat-value">0</span>
                 </div>
             </div>
@@ -38,83 +38,123 @@
                 </div>
             </div>
             <div class="stat-card">
+                <i class="fa-solid fa-calendar-week icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Total da Semana</span>
+                    <span id="statTotalWeek" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
                 <i class="fa-solid fa-chart-line icon"></i>
                 <div class="stat-info">
-                    <span class="stat-label">Média por Membro</span>
+                    <span class="stat-label">Média Diária (Hoje)</span>
                     <span id="statAverage" class="stat-value">0</span>
                 </div>
             </div>
             <div class="stat-card">
-                <i class="fa-solid fa-trophy icon"></i>
+                <i class="fa-solid fa-arrows-up-down icon"></i>
                 <div class="stat-info">
-                    <span class="stat-label">Maior / Menor</span>
+                    <span class="stat-label">Maior / Menor (Hoje)</span>
                     <span id="statMinMax" class="stat-value">0 / 0</span>
+                </div>
+            </div>
+            <div class="stat-card highlight">
+                <i class="fa-solid fa-crown icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Destaque da Semana</span>
+                    <span id="statTopPlayer" class="stat-value">-</span>
                 </div>
             </div>
         </section>
 
-        <!-- Seção de Ações Rápidas & Backup -->
+        <!-- Barra de Ações Rápidas & Backup -->
         <section class="actions-bar">
             <div class="backup-controls">
                 <button id="btnExport" class="btn btn-secondary"><i class="fa-solid fa-download"></i> Exportar JSON</button>
                 <label for="importFile" class="btn btn-secondary"><i class="fa-solid fa-upload"></i> Importar JSON</label>
                 <input type="file" id="importFile" accept=".json" style="display: none;">
             </div>
-            <button id="btnResetDay" class="btn btn-danger"><i class="fa-solid fa-rotate-left"></i> Zerar Dia Atual</button>
+            <button id="btnResetDay" class="btn btn-danger"><i class="fa-solid fa-rotate-left"></i> Zerar Registros do Dia</button>
         </section>
 
-        <!-- Layout em Duas Colunas -->
-        <div class="content-grid">
-            <!-- Coluna Esquerda: Membros e Contribuição -->
-            <section class="panel">
-                <h2><i class="fa-solid fa-user-plus"></i> Gerenciar Membros</h2>
-                
+        <!-- Seção de Gerenciamento e Visão Geral da Semana -->
+        <section class="panel full-width">
+            <h2><i class="fa-solid fa-list-check"></i> Controle de Contribuições da Semana</h2>
+            
+            <div class="panel-header-controls">
                 <form id="addPlayerForm" class="form-row">
                     <input type="text" id="playerNameInput" placeholder="Nome do Jogador" required>
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar Membro</button>
                 </form>
 
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" id="searchPlayerInput" placeholder="Buscar jogador...">
                 </div>
+            </div>
 
-                <div class="players-list-container">
-                    <table class="data-table" id="playersTable">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Contribuição Hoje</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="playersTableBody">
-                            <!-- Inserido dinamicamente via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <div class="table-responsive">
+                <table class="data-table" id="mainTable">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Contrib. Total</th>
+                            <th>Sem. Anterior</th>
+                            <th class="col-highlight">Contrib. Hoje</th>
+                            <th>Seg</th>
+                            <th>Ter</th>
+                            <th>Qua</th>
+                            <th>Qui</th>
+                            <th>Sex</th>
+                            <th>Sáb</th>
+                            <th>Dom</th>
+                            <th class="col-highlight">Total Sem.</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mainTableBody">
+                        <!-- Inserido via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <!-- Coluna Direita: Ranking -->
-            <section class="panel">
-                <h2><i class="fa-solid fa-ranking-star"></i> Ranking Diário</h2>
-                <div class="ranking-list-container">
-                    <table class="data-table" id="rankingTable">
-                        <thead>
-                            <tr>
-                                <th>Posição</th>
-                                <th>Jogador</th>
-                                <th>Contribuição</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rankingTableBody">
-                            <!-- Inserido dinamicamente via JS -->
-                        </tbody>
-                    </table>
+        <!-- Seção de Ranking -->
+        <section class="panel full-width">
+            <div class="ranking-header">
+                <h2><i class="fa-solid fa-trophy"></i> Ranking da Guilda</h2>
+                <div class="ranking-toggle">
+                    <button id="btnRankDay" class="btn btn-tab active"><i class="fa-solid fa-calendar-day"></i> Ranking do Dia</button>
+                    <button id="btnRankWeek" class="btn btn-tab"><i class="fa-solid fa-calendar-week"></i> Ranking da Semana</button>
                 </div>
-            </section>
-        </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table" id="rankingTable">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Jogador</th>
+                            <th>Contribuição Total</th>
+                            <th>Contribuição da Semana Anterior</th>
+                            <th>Contribuição Filtrada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingTableBody">
+                        <!-- Inserido via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
+
+    <!-- Modal: Detalhes e Resumo do Jogador -->
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalPlayerDetails"></div>
+        </div>
+    </div>
 
     <footer class="app-footer">
         <p>Sistema de Controle de Guilda DDTank &copy; Todos os direitos reservados.</p>
