@@ -1,10 +1,14 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3 - Persistência Reforçada)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3 - Admin Protect)
  */
 
-// Chaves de armazenamento (para evitar perda por troca de versão)
 const PRIMARY_KEY = 'ddtank_guild_manager_v3_db';
 const BACKUP_KEYS = ['ddtank_guild_manager_v2_db', 'ddtank_guild_manager_db'];
+
+// SENHA PADRÃO DO ADMINISTRADOR
+const ADMIN_PASSWORD = "fiction1980"; // Você pode alterar esta senha se quiser
+
+let isAdmin = false;
 
 let state = {
     players: [],
@@ -39,21 +43,19 @@ const btnRankTotal = document.getElementById('btnRankTotal');
 const btnRankPrev = document.getElementById('btnRankPrev');
 const btnRankWeek = document.getElementById('btnRankWeek');
 
+const btnAdminLogin = document.getElementById('btnAdminLogin');
+
 const playerModal = document.getElementById('playerModal');
 const modalPlayerDetails = document.getElementById('modalPlayerDetails');
 const closeModalBtn = document.querySelector('.close-modal');
 
 document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
-    if (currentDateInput) {
-        currentDateInput.value = today;
-    }
+    if (currentDateInput) currentDateInput.value = today;
     selectedDate = today;
 
-    // 1. Carrega os dados salvos no navegador
     loadFromLocalStorage();
 
-    // 2. Event Listeners
     if (currentDateInput) {
         currentDateInput.addEventListener('change', (e) => {
             selectedDate = e.target.value;
@@ -72,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnRankPrev) btnRankPrev.addEventListener('click', () => setRankingMode('prev', btnRankPrev));
     if (btnRankWeek) btnRankWeek.addEventListener('click', () => setRankingMode('week', btnRankWeek));
 
+    if (btnAdminLogin) btnAdminLogin.addEventListener('click', toggleAdminMode);
+
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', () => playerModal.style.display = 'none');
     }
@@ -79,9 +83,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
-    // 3. Renderiza a aplicação
     renderApp();
 });
+
+function toggleAdminMode() {
+    if (isAdmin) {
+        isAdmin = false;
+        document.body.classList.remove('is-admin');
+        btnAdminLogin.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Leitor';
+        btnAdminLogin.classList.remove('btn-danger');
+        btnAdminLogin.classList.add('btn-warning');
+        alert("Você saiu do Modo Administrador.");
+        renderApp();
+    } else {
+        const passwordInput = prompt("Digite a senha de Administrador para editar:");
+        if (passwordInput === ADMIN_PASSWORD) {
+            isAdmin = true;
+            document.body.classList.add('is-admin');
+            btnAdminLogin.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
+            btnAdminLogin.classList.remove('btn-warning');
+            btnAdminLogin.classList.add('btn-danger');
+            alert("Modo Administrador ativado! Agora você pode editar todas as informações.");
+            renderApp();
+        } else if (passwordInput !== null) {
+            alert("Senha incorreta!");
+        }
+    }
+}
 
 function setRankingMode(mode, activeBtn) {
     currentRankingMode = mode;
@@ -90,15 +118,9 @@ function setRankingMode(mode, activeBtn) {
     renderRanking();
 }
 
-/* ==========================================================================
-   PERSISTÊNCIA DE DADOS MULTI-CHAVE
-   ========================================================================== */
 function loadFromLocalStorage() {
     try {
-        // Tenta carregar da chave principal
         let data = localStorage.getItem(PRIMARY_KEY);
-        
-        // Se não encontrar, tenta nas chaves de backup/antigas
         if (!data) {
             for (let key of BACKUP_KEYS) {
                 const legacy = localStorage.getItem(key);
@@ -125,12 +147,10 @@ function loadFromLocalStorage() {
 function saveToLocalStorage() {
     try {
         const serialized = JSON.stringify(state);
-        // Salva na chave atual e nas réplicas para não perder dados em nenhuma versão
         localStorage.setItem(PRIMARY_KEY, serialized);
         BACKUP_KEYS.forEach(key => localStorage.setItem(key, serialized));
     } catch (e) {
         console.error("Erro ao salvar no LocalStorage:", e);
-        alert("Atenção: O navegador impediu a gravação local dos dados. Certifique-se de não estar usando a Aba Anônima.");
     }
 }
 
@@ -153,6 +173,8 @@ function getWeekDates(dateString) {
 
 function handleAddPlayer(e) {
     e.preventDefault();
+    if (!isAdmin) return;
+
     const name = playerNameInput.value.trim();
     if (!name) return;
 
@@ -174,6 +196,7 @@ function handleAddPlayer(e) {
 }
 
 function editPlayer(id) {
+    if (!isAdmin) return;
     const player = state.players.find(p => p.id === id);
     if (!player) return;
 
@@ -186,6 +209,7 @@ function editPlayer(id) {
 }
 
 function deletePlayer(id) {
+    if (!isAdmin) return;
     const player = state.players.find(p => p.id === id);
     if (!player) return;
 
@@ -197,6 +221,7 @@ function deletePlayer(id) {
 }
 
 function saveDailyInput(playerId, dateKey) {
+    if (!isAdmin) return;
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
 
@@ -222,6 +247,7 @@ function saveDailyInput(playerId, dateKey) {
 }
 
 function updateMainPlayerTotals(playerId) {
+    if (!isAdmin) return;
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
 
@@ -236,6 +262,7 @@ function updateMainPlayerTotals(playerId) {
 }
 
 function handleResetDay() {
+    if (!isAdmin) return;
     if (confirm(`Deseja zerar os registros da data ${selectedDate}?`)) {
         (state.players || []).forEach(p => {
             if (p.dailyHistory) delete p.dailyHistory[selectedDate];
@@ -260,7 +287,7 @@ function renderMainTable() {
     const filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
 
     if (filtered.length === 0) {
-        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado. Clique em "Importar JSON" para carregar.</td></tr>`;
+        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado.</td></tr>`;
         return;
     }
 
@@ -271,36 +298,49 @@ function renderMainTable() {
             const dailyVal = player.dailyHistory ? (player.dailyHistory[dateKey] || 0) : 0;
             weekTotalSum += dailyVal;
 
-            return `
-                <td>
-                    <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
-                        <input type="number" class="input-sm" id="day_input_${player.id}_${dateKey}" placeholder="Novo Tot." style="width:75px;">
-                        <button class="btn btn-primary btn-sm" onclick="saveDailyInput('${player.id}', '${dateKey}')" title="Calcular Dia">
-                            <i class="fa-solid fa-check"></i>
-                        </button>
-                        <small style="color:var(--primary-gold); font-size:0.75rem;">+${dailyVal.toLocaleString()}</small>
-                    </div>
-                </td>
-            `;
+            if (isAdmin) {
+                return `
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                            <input type="number" class="input-sm" id="day_input_${player.id}_${dateKey}" placeholder="Novo Tot." style="width:75px;">
+                            <button class="btn btn-primary btn-sm" onclick="saveDailyInput('${player.id}', '${dateKey}')" title="Calcular Dia">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <small style="color:var(--primary-gold); font-size:0.75rem;">+${dailyVal.toLocaleString()}</small>
+                        </div>
+                    </td>
+                `;
+            } else {
+                return `<td>+${dailyVal.toLocaleString()}</td>`;
+            }
         }).join('');
 
         const tr = document.createElement('tr');
+
+        const totalCellHtml = isAdmin 
+            ? `<input type="number" class="input-sm" id="tot_${player.id}" value="${player.contribTotal || 0}" onchange="updateMainPlayerTotals('${player.id}')">`
+            : `${(player.contribTotal || 0).toLocaleString()}`;
+
+        const prevCellHtml = isAdmin 
+            ? `<input type="number" class="input-sm" id="prev_${player.id}" value="${player.contribSemanaAnterior || 0}" onchange="updateMainPlayerTotals('${player.id}')">`
+            : `${(player.contribSemanaAnterior || 0).toLocaleString()}`;
+
+        const actionsCellHtml = isAdmin ? `
+            <td class="admin-only">
+                <button class="btn btn-secondary btn-sm" onclick="editPlayer('${player.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deletePlayer('${player.id}')"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        ` : '';
+
         tr.innerHTML = `
             <td>
                 <span class="player-link" onclick="openPlayerSummary('${player.id}')">${escapeHTML(player.name)}</span>
             </td>
-            <td>
-                <input type="number" class="input-sm" id="tot_${player.id}" value="${player.contribTotal || 0}" onchange="updateMainPlayerTotals('${player.id}')">
-            </td>
-            <td>
-                <input type="number" class="input-sm" id="prev_${player.id}" value="${player.contribSemanaAnterior || 0}" onchange="updateMainPlayerTotals('${player.id}')">
-            </td>
+            <td>${totalCellHtml}</td>
+            <td>${prevCellHtml}</td>
             ${weekInputsCells}
             <td class="col-highlight"><strong>${weekTotalSum.toLocaleString()}</strong></td>
-            <td>
-                <button class="btn btn-secondary btn-sm" onclick="editPlayer('${player.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn btn-danger btn-sm" onclick="deletePlayer('${player.id}')"><i class="fa-solid fa-trash"></i></button>
-            </td>
+            ${actionsCellHtml}
         `;
         mainTableBody.appendChild(tr);
     });
@@ -334,7 +374,7 @@ function renderRanking() {
     rankingData.sort((a, b) => b.rankValue - a.rankValue);
 
     if (rankingData.length === 0) {
-        rankingTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Sem dados para o ranking.</td></tr>`;
+        rankingTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Sem dados.</td></tr>`;
         return;
     }
 
@@ -423,6 +463,7 @@ function exportDataToJSON() {
 }
 
 function importDataFromJSON(e) {
+    if (!isAdmin) return;
     const file = e.target.files[0];
     if (!file) return;
 
@@ -433,14 +474,14 @@ function importDataFromJSON(e) {
             let playersToImport = Array.isArray(importedData) ? importedData : (importedData.players || []);
 
             if (playersToImport.length > 0) {
-                if (confirm(`Deseja importar ${playersToImport.length} jogadores?`)) {
+                if (confirm(`Importar ${playersToImport.length} jogadores?`)) {
                     state = {
                         players: playersToImport,
                         history: importedData.history || {}
                     };
-                    saveToLocalStorage(); // Salva IMEDIATAMENTE no navegador
+                    saveToLocalStorage();
                     renderApp();
-                    alert("Dados importados e salvos no navegador com sucesso!");
+                    alert("Dados importados com sucesso!");
                 }
             } else {
                 alert("Nenhum jogador encontrado no arquivo.");
