@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Contribuição de Guilda - DDTank</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Ícones via FontAwesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-container">
+            <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> Guilda DDTank</h1>
+            <div class="date-picker-wrapper">
+                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data:</label>
+                <input type="date" id="currentDate">
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Cards de Estatísticas -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <i class="fa-solid fa-users icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Membros Cadastrados</span>
+                    <span id="statTotalPlayers" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-coins icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Total Arrecadado Hoje</span>
+                    <span id="statTotalToday" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-chart-line icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Média por Membro</span>
+                    <span id="statAverage" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-trophy icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Maior / Menor</span>
+                    <span id="statMinMax" class="stat-value">0 / 0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Ações Rápidas & Backup -->
+        <section class="actions-bar">
+            <div class="backup-controls">
+                <button id="btnExport" class="btn btn-secondary"><i class="fa-solid fa-download"></i> Exportar JSON</button>
+                <label for="importFile" class="btn btn-secondary"><i class="fa-solid fa-upload"></i> Importar JSON</label>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+            <button id="btnResetDay" class="btn btn-danger"><i class="fa-solid fa-rotate-left"></i> Zerar Dia Atual</button>
+        </section>
+
+        <!-- Layout em Duas Colunas -->
+        <div class="content-grid">
+            <!-- Coluna Esquerda: Membros e Contribuição -->
+            <section class="panel">
+                <h2><i class="fa-solid fa-user-plus"></i> Gerenciar Membros</h2>
+                
+                <form id="addPlayerForm" class="form-row">
+                    <input type="text" id="playerNameInput" placeholder="Nome do Jogador" required>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar</button>
+                </form>
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchPlayerInput" placeholder="Buscar jogador...">
+                </div>
+
+                <div class="players-list-container">
+                    <table class="data-table" id="playersTable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Contribuição Hoje</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playersTableBody">
+                            <!-- Inserido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Coluna Direita: Ranking -->
+            <section class="panel">
+                <h2><i class="fa-solid fa-ranking-star"></i> Ranking Diário</h2>
+                <div class="ranking-list-container">
+                    <table class="data-table" id="rankingTable">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Jogador</th>
+                                <th>Contribuição</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingTableBody">
+                            <!-- Inserido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>Sistema de Controle de Guilda DDTank &copy; Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
