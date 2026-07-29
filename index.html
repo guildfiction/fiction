@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FICTION - Controle de Contribuição</title>
+    <title>Controle de Contribuição de Guilda - DDTank</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Ícones via FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <header class="app-header">
         <div class="header-container">
-            <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> FICTION</h1>
+            <h1 id="guildName"><i class="fa-solid fa-shield-halved"></i> Guilda DDTank</h1>
             <div class="date-picker-wrapper">
-                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data do Registro:</label>
+                <label for="currentDate"><i class="fa-solid fa-calendar-days"></i> Data de Referência:</label>
                 <input type="date" id="currentDate">
             </div>
         </div>
@@ -51,13 +50,6 @@
                     <span id="statAverage" class="stat-value">0</span>
                 </div>
             </div>
-            <div class="stat-card">
-                <i class="fa-solid fa-arrows-up-down icon"></i>
-                <div class="stat-info">
-                    <span class="stat-label">Maior / Menor (Hoje)</span>
-                    <span id="statMinMax" class="stat-value">0 / 0</span>
-                </div>
-            </div>
             <div class="stat-card highlight">
                 <i class="fa-solid fa-crown icon"></i>
                 <div class="stat-info">
@@ -67,7 +59,7 @@
             </div>
         </section>
 
-        <!-- Barra de Ações Rápidas & Backup -->
+        <!-- Barra de Ações & Backup -->
         <section class="actions-bar">
             <div class="backup-controls">
                 <button id="btnExport" class="btn btn-secondary"><i class="fa-solid fa-download"></i> Exportar JSON</button>
@@ -77,9 +69,9 @@
             <button id="btnResetDay" class="btn btn-danger"><i class="fa-solid fa-rotate-left"></i> Zerar Registros do Dia</button>
         </section>
 
-        <!-- Seção de Gerenciamento e Visão Geral da Semana -->
+        <!-- Tabela Principal de Controle -->
         <section class="panel full-width">
-            <h2><i class="fa-solid fa-list-check"></i> Controle de Contribuições da Semana</h2>
+            <h2><i class="fa-solid fa-list-check"></i> Registro Diário & Controle da Semana</h2>
             
             <div class="panel-header-controls">
                 <form id="addPlayerForm" class="form-row">
@@ -97,10 +89,9 @@
                 <table class="data-table" id="mainTable">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Contrib. Total</th>
-                            <th>Sem. Anterior</th>
-                            <th class="col-highlight">Contrib. Hoje</th>
+                            <th>Nome do Jogador</th>
+                            <th>Contrib. Total Atual</th>
+                            <th>Semana Anterior</th>
                             <th>Seg</th>
                             <th>Ter</th>
                             <th>Qua</th>
@@ -113,19 +104,20 @@
                         </tr>
                     </thead>
                     <tbody id="mainTableBody">
-                        <!-- Inserido via JS -->
+                        <!-- JS Dinâmico -->
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- Seção de Ranking -->
+        <!-- Seção de Rankings Diferenciados -->
         <section class="panel full-width">
             <div class="ranking-header">
-                <h2><i class="fa-solid fa-trophy"></i> Ranking da Guilda</h2>
+                <h2><i class="fa-solid fa-trophy"></i> Rankings da Guilda</h2>
                 <div class="ranking-toggle">
-                    <button id="btnRankDay" class="btn btn-tab active"><i class="fa-solid fa-calendar-day"></i> Ranking do Dia</button>
-                    <button id="btnRankWeek" class="btn btn-tab"><i class="fa-solid fa-calendar-week"></i> Ranking da Semana</button>
+                    <button id="btnRankTotal" class="btn btn-tab active"><i class="fa-solid fa-coins"></i> Contribuição Total</button>
+                    <button id="btnRankPrev" class="btn btn-tab"><i class="fa-solid fa-clock-rotate-left"></i> Semana Anterior</button>
+                    <button id="btnRankWeek" class="btn btn-tab"><i class="fa-solid fa-calendar-week"></i> Daquela Semana</button>
                 </div>
             </div>
 
@@ -136,19 +128,19 @@
                             <th>Posição</th>
                             <th>Jogador</th>
                             <th>Contribuição Total</th>
-                            <th>Contribuição da Semana Anterior</th>
-                            <th>Contribuição Filtrada</th>
+                            <th>Semana Anterior</th>
+                            <th>Valor do Ranking</th>
                         </tr>
                     </thead>
                     <tbody id="rankingTableBody">
-                        <!-- Inserido via JS -->
+                        <!-- JS Dinâmico -->
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
 
-    <!-- Modal: Detalhes e Resumo do Jogador -->
+    <!-- Modal Resumo -->
     <div id="playerModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
