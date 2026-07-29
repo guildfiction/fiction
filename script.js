@@ -118,30 +118,28 @@ function setRankingMode(mode, activeBtn) {
     renderRanking();
 }
 
+/* ==========================================================================
+   CARREGAMENTO DIRETO DO ARQUIVO DO REPOSITÓRIO (dados.json)
+   ========================================================================== */
 function loadFromLocalStorage() {
-    try {
-        let data = localStorage.getItem(PRIMARY_KEY);
-        if (!data) {
-            for (let key of BACKUP_KEYS) {
-                const legacy = localStorage.getItem(key);
-                if (legacy) {
-                    data = legacy;
-                    break;
-                }
+    // Busca sempre o arquivo dados.json hospedado no GitHub
+    fetch('dados.json?t=' + Date.now()) // O '?t=' evita que o navegador faça cache do arquivo antigo
+        .then(response => {
+            if (!response.ok) throw new Error('Arquivo dados.json não encontrado no repositório');
+            return response.json();
+        })
+        .then(remoteData => {
+            if (remoteData && (remoteData.players || Array.isArray(remoteData))) {
+                state = {
+                    players: Array.isArray(remoteData) ? remoteData : remoteData.players,
+                    history: remoteData.history || {}
+                };
+                renderApp();
             }
-        }
-
-        if (data) {
-            const parsed = JSON.parse(data);
-            if (parsed && Array.isArray(parsed.players)) {
-                state = parsed;
-            } else if (Array.isArray(parsed)) {
-                state = { players: parsed, history: {} };
-            }
-        }
-    } catch (e) {
-        console.error("Erro ao carregar do LocalStorage:", e);
-    }
+        })
+        .catch(err => {
+            console.error('Erro ao carregar dados.json do repositório:', err);
+        });
 }
 
 function saveToLocalStorage() {
