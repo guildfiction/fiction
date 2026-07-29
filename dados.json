@@ -35,22 +35,6 @@
       "lastUpdated": "2026-07-28T21:30:00.000Z"
     },
     {
-      "id": "p_3",
-      "name": "THIꞠAꞨ",
-      "contribTotal": 0,
-      "contribSemanaAnterior": 0,
-      "dailyHistory": {
-        "2026-07-28": 0
-      },
-      "totalHistory": {
-        "2026-07-28": 39564
-      },
-      "prevWeekHistory": {
-        "2026-07-28": 3450
-      },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
-    },
-    {
       "id": "p_4",
       "name": "Obanai",
       "contribTotal": 30000,
@@ -515,22 +499,6 @@
       "lastUpdated": "2026-07-28T21:30:00.000Z"
     },
     {
-      "id": "p_33",
-      "name": "PigKiller",
-      "contribTotal": 0,
-      "contribSemanaAnterior": 0,
-      "dailyHistory": {
-        "2026-07-28": 0
-      },
-      "totalHistory": {
-        "2026-07-28": 1804
-      },
-      "prevWeekHistory": {
-        "2026-07-28": 304
-      },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
-    },
-    {
       "id": "p_34",
       "name": "RealGu",
       "contribTotal": 10343,
@@ -607,22 +575,6 @@
       },
       "prevWeekHistory": {
         "2026-07-28": 1839
-      },
-      "lastUpdated": "2026-07-28T21:30:00.000Z"
-    },
-    {
-      "id": "p_39",
-      "name": "Cavendish",
-      "contribTotal": 0,
-      "contribSemanaAnterior": 0,
-      "dailyHistory": {
-        "2026-07-28": 0
-      },
-      "totalHistory": {
-        "2026-07-28": 18896
-      },
-      "prevWeekHistory": {
-        "2026-07-28": 5231
       },
       "lastUpdated": "2026-07-28T21:30:00.000Z"
     },
@@ -786,6 +738,15 @@
       "name": "Alfredo",
       "contribTotal": 2805,
       "contribSemanaAnterior": 1814,
+      "dailyHistory": {},
+      "totalHistory": {},
+      "prevWeekHistory": {}
+    },
+    {
+      "id": "p_1785347791031",
+      "name": "Zyrox",
+      "contribTotal": 0,
+      "contribSemanaAnterior": 0,
       "dailyHistory": {},
       "totalHistory": {},
       "prevWeekHistory": {}
