@@ -1,9 +1,10 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3)
- * Com persistência forçada no LocalStorage e tratamento de erros.
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3 - Persistência Reforçada)
  */
 
-const STORAGE_KEY = 'ddtank_guild_manager_v3_db';
+// Chaves de armazenamento (para evitar perda por troca de versão)
+const PRIMARY_KEY = 'ddtank_guild_manager_v3_db';
+const BACKUP_KEYS = ['ddtank_guild_manager_v2_db', 'ddtank_guild_manager_db'];
 
 let state = {
     players: [],
@@ -49,9 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     selectedDate = today;
 
-    // Carrega dados salvos antes de renderizar
+    // 1. Carrega os dados salvos no navegador
     loadFromLocalStorage();
 
+    // 2. Event Listeners
     if (currentDateInput) {
         currentDateInput.addEventListener('change', (e) => {
             selectedDate = e.target.value;
@@ -77,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
+    // 3. Renderiza a aplicação
     renderApp();
 });
 
@@ -87,26 +90,47 @@ function setRankingMode(mode, activeBtn) {
     renderRanking();
 }
 
+/* ==========================================================================
+   PERSISTÊNCIA DE DADOS MULTI-CHAVE
+   ========================================================================== */
 function loadFromLocalStorage() {
     try {
-        const data = localStorage.getItem(STORAGE_KEY);
+        // Tenta carregar da chave principal
+        let data = localStorage.getItem(PRIMARY_KEY);
+        
+        // Se não encontrar, tenta nas chaves de backup/antigas
+        if (!data) {
+            for (let key of BACKUP_KEYS) {
+                const legacy = localStorage.getItem(key);
+                if (legacy) {
+                    data = legacy;
+                    break;
+                }
+            }
+        }
+
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.players)) {
                 state = parsed;
+            } else if (Array.isArray(parsed)) {
+                state = { players: parsed, history: {} };
             }
         }
     } catch (e) {
-        console.error("Erro ao carregar dados do LocalStorage:", e);
+        console.error("Erro ao carregar do LocalStorage:", e);
     }
 }
 
 function saveToLocalStorage() {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const serialized = JSON.stringify(state);
+        // Salva na chave atual e nas réplicas para não perder dados em nenhuma versão
+        localStorage.setItem(PRIMARY_KEY, serialized);
+        BACKUP_KEYS.forEach(key => localStorage.setItem(key, serialized));
     } catch (e) {
         console.error("Erro ao salvar no LocalStorage:", e);
-        alert("Atenção: Seu navegador não permitiu salvar os dados localmente. Verifique se está em Modo Anônimo.");
+        alert("Atenção: O navegador impediu a gravação local dos dados. Certifique-se de não estar usando a Aba Anônima.");
     }
 }
 
@@ -236,7 +260,7 @@ function renderMainTable() {
     const filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
 
     if (filtered.length === 0) {
-        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado. Clique em "Importar JSON".</td></tr>`;
+        mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado. Clique em "Importar JSON" para carregar.</td></tr>`;
         return;
     }
 
@@ -409,7 +433,7 @@ function importDataFromJSON(e) {
             let playersToImport = Array.isArray(importedData) ? importedData : (importedData.players || []);
 
             if (playersToImport.length > 0) {
-                if (confirm(`Importar ${playersToImport.length} jogadores?`)) {
+                if (confirm(`Deseja importar ${playersToImport.length} jogadores?`)) {
                     state = {
                         players: playersToImport,
                         history: importedData.history || {}
@@ -424,7 +448,6 @@ function importDataFromJSON(e) {
         } catch (error) {
             alert("Erro ao ler o arquivo JSON.");
         }
-        // Limpa o input do arquivo para permitir reimportações
         e.target.value = '';
     };
     fileReader.readAsText(file);
