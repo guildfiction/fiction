@@ -7,18 +7,7 @@ const STORAGE_KEY = 'ddtank_guild_manager_v2_db';
 
 // Estrutura de Estado Global
 let state = {
-    players: [], 
-    // Estrutura de cada player:
-    // {
-    //    id: string,
-    //    name: string,
-    //    contribTotal: number,
-    //    contribSemanaAnterior: number,
-    //    dailyHistory: { 'YYYY-MM-DD': number },
-    //    totalHistory: { 'YYYY-MM-DD': number },
-    //    prevWeekHistory: { 'YYYY-MM-DD': number },
-    //    lastUpdated: string
-    // }
+    players: []
 };
 
 let selectedDate = '';
@@ -91,9 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
         renderRanking();
     });
 
-    closeModalBtn.addEventListener('click', () => {
-        playerModal.style.display = 'none';
-    });
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            playerModal.style.display = 'none';
+        });
+    }
 
     window.addEventListener('click', (e) => {
         if (e.target === playerModal) playerModal.style.display = 'none';
@@ -103,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   PERSISTÊNCIA (LOCALSTORAGE & MIGRATION)
+   PERSISTÊNCIA (LOCALSTORAGE)
    ========================================================================== */
 function loadFromLocalStorage() {
     const data = localStorage.getItem(STORAGE_KEY);
@@ -162,7 +153,7 @@ function getWeekDates(dateString) {
         d.setDate(monday.getDate() + i);
         weekDates.push(d.toISOString().split('T')[0]);
     }
-    return weekDates; // Array com YYYY-MM-DD de Segunda a Domingo
+    return weekDates;
 }
 
 function getPreviousDateString(dateString) {
@@ -220,7 +211,6 @@ function deletePlayer(id) {
     }
 }
 
-// Atualização diária dos campos inseridos pelo usuário
 function updatePlayerValues(playerId, newTotalInput, newPrevWeekInput) {
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
@@ -228,12 +218,10 @@ function updatePlayerValues(playerId, newTotalInput, newPrevWeekInput) {
     const newTotal = parseInt(newTotalInput.value) || 0;
     const newPrevWeek = parseInt(newPrevWeekInput.value) || 0;
 
-    // Garante inicialização
     if (!player.totalHistory) player.totalHistory = {};
     if (!player.dailyHistory) player.dailyHistory = {};
     if (!player.prevWeekHistory) player.prevWeekHistory = {};
 
-    // Salva totais
     player.contribTotal = newTotal;
     player.contribSemanaAnterior = newPrevWeek;
     player.totalHistory[selectedDate] = newTotal;
@@ -246,9 +234,9 @@ function updatePlayerValues(playerId, newTotalInput, newPrevWeekInput) {
     let dailyValue = 0;
     if (prevTotal !== undefined) {
         dailyValue = newTotal - prevTotal;
-        if (dailyValue < 0) dailyValue = 0; // Impede valores negativos
+        if (dailyValue < 0) dailyValue = 0;
     } else {
-        dailyValue = newTotal; // Primeiro registro
+        dailyValue = newTotal;
     }
 
     player.dailyHistory[selectedDate] = dailyValue;
@@ -280,11 +268,12 @@ function renderApp() {
 }
 
 function renderMainTable() {
+    if (!mainTableBody) return;
     mainTableBody.innerHTML = '';
-    const filter = searchPlayerInput.value.toLowerCase().trim();
+    const filter = searchPlayerInput ? searchPlayerInput.value.toLowerCase().trim() : '';
     const weekDates = getWeekDates(selectedDate);
 
-    const filtered = state.players.filter(p => p.name.toLowerCase().includes(filter));
+    const filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
 
     if (filtered.length === 0) {
         mainTableBody.innerHTML = `<tr><td colspan="13" style="text-align:center; color:var(--text-muted);">Nenhum jogador encontrado.</td></tr>`;
@@ -292,11 +281,10 @@ function renderMainTable() {
     }
 
     filtered.forEach(player => {
-        const totalToday = player.totalHistory ? (player.totalHistory[selectedDate] ?? '') : '';
-        const prevWeek = player.prevWeekHistory ? (player.prevWeekHistory[selectedDate] ?? '') : '';
+        const totalToday = player.totalHistory ? (player.totalHistory[selectedDate] ?? '') : (player.contribTotal ?? '');
+        const prevWeek = player.prevWeekHistory ? (player.prevWeekHistory[selectedDate] ?? '') : (player.contribSemanaAnterior ?? '');
         const dailyToday = player.dailyHistory ? (player.dailyHistory[selectedDate] ?? 0) : 0;
 
-        // Soma da Semana Selecionada
         let weekTotalSum = 0;
         const weekCells = weekDates.map(dateKey => {
             const val = player.dailyHistory ? (player.dailyHistory[dateKey] || 0) : 0;
@@ -339,15 +327,15 @@ function saveRow(playerId) {
 }
 
 function renderRanking() {
+    if (!rankingTableBody) return;
     rankingTableBody.innerHTML = '';
     const weekDates = getWeekDates(selectedDate);
 
-    const rankingData = state.players.map(player => {
+    const rankingData = (state.players || []).map(player => {
         let contrib = 0;
         if (currentRankingMode === 'day') {
             contrib = player.dailyHistory ? (player.dailyHistory[selectedDate] || 0) : 0;
         } else {
-            // Soma da semana inteira
             contrib = weekDates.reduce((acc, d) => acc + (player.dailyHistory ? (player.dailyHistory[d] || 0) : 0), 0);
         }
 
@@ -387,21 +375,20 @@ function renderRanking() {
 }
 
 function renderStats() {
-    const totalPlayers = state.players.length;
-    statTotalPlayers.textContent = totalPlayers;
+    const playersList = state.players || [];
+    const totalPlayers = playersList.length;
+    if (statTotalPlayers) statTotalPlayers.textContent = totalPlayers;
 
     const weekDates = getWeekDates(selectedDate);
 
-    // Contribuição Diária de Hoje
-    const todayDailyValues = state.players.map(p => p.dailyHistory ? (p.dailyHistory[selectedDate] || 0) : 0);
+    const todayDailyValues = playersList.map(p => p.dailyHistory ? (p.dailyHistory[selectedDate] || 0) : 0);
     const totalToday = todayDailyValues.reduce((a, b) => a + b, 0);
-    statTotalToday.textContent = totalToday.toLocaleString();
+    if (statTotalToday) statTotalToday.textContent = totalToday.toLocaleString();
 
-    // Contribuição Semanal
     let weekTotalSum = 0;
     let topPlayerWeek = { name: '-', score: -1 };
 
-    state.players.forEach(p => {
+    playersList.forEach(p => {
         const pWeekSum = weekDates.reduce((acc, d) => acc + (p.dailyHistory ? (p.dailyHistory[d] || 0) : 0), 0);
         weekTotalSum += pWeekSum;
 
@@ -410,30 +397,29 @@ function renderStats() {
         }
     });
 
-    statTotalWeek.textContent = weekTotalSum.toLocaleString();
+    if (statTotalWeek) statTotalWeek.textContent = weekTotalSum.toLocaleString();
 
-    // Média Diária (Hoje)
     const avg = totalPlayers > 0 ? (totalToday / totalPlayers).toFixed(1) : 0;
-    statAverage.textContent = avg;
+    if (statAverage) statAverage.textContent = avg;
 
-    // Maior / Menor
     if (totalPlayers > 0) {
         const max = Math.max(...todayDailyValues);
         const min = Math.min(...todayDailyValues);
-        statMinMax.textContent = `${max.toLocaleString()} / ${min.toLocaleString()}`;
+        if (statMinMax) statMinMax.textContent = `${max.toLocaleString()} / ${min.toLocaleString()}`;
     } else {
-        statMinMax.textContent = '0 / 0';
+        if (statMinMax) statMinMax.textContent = '0 / 0';
     }
 
-    // Top Jogador da Semana
-    statTopPlayer.textContent = topPlayerWeek.score > 0 ? `${topPlayerWeek.name} (${topPlayerWeek.score.toLocaleString()})` : '-';
+    if (statTopPlayer) {
+        statTopPlayer.textContent = topPlayerWeek.score > 0 ? `${topPlayerWeek.name} (${topPlayerWeek.score.toLocaleString()})` : '-';
+    }
 }
 
 /* ==========================================================================
    RESUMO E MODAL DO JOGADOR
    ========================================================================== */
 function openPlayerSummary(playerId) {
-    const player = state.players.find(p => p.id === playerId);
+    const player = (state.players || []).find(p => p.id === playerId);
     if (!player) return;
 
     const weekDates = getWeekDates(selectedDate);
@@ -466,7 +452,7 @@ function openPlayerSummary(playerId) {
 }
 
 /* ==========================================================================
-   BACKUP (EXPORTAR / IMPORTAR)
+   BACKUP (EXPORTAR / IMPORTAR COM SUPORTE DIVERSOS FORMATOS)
    ========================================================================== */
 function exportDataToJSON() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
@@ -479,34 +465,47 @@ function exportDataToJSON() {
 }
 
 function importDataFromJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
     const fileReader = new FileReader();
     fileReader.onload = function (event) {
         try {
             const importedData = JSON.parse(event.target.result);
-            if (importedData && importedData.players) {
-                if (confirm("Importar o arquivo substituirá os dados atuais. Confirmar?")) {
-                    state = importedData;
+            let playersToImport = [];
+
+            if (Array.isArray(importedData)) {
+                playersToImport = importedData;
+            } else if (importedData && Array.isArray(importedData.players)) {
+                playersToImport = importedData.players;
+            }
+
+            if (playersToImport.length > 0) {
+                if (confirm(`Deseja importar ${playersToImport.length} jogadores? Isso atualizará o banco de dados atual.`)) {
+                    state = {
+                        players: playersToImport,
+                        history: importedData.history || {}
+                    };
                     saveToLocalStorage();
                     renderApp();
                     alert("Dados importados com sucesso!");
                 }
             } else {
-                alert("Formato de arquivo inválido.");
+                alert("Nenhum dado válido de jogadores foi encontrado no arquivo.");
             }
         } catch (error) {
-            alert("Erro ao ler o arquivo JSON.");
+            console.error("Erro ao importar JSON:", error);
+            alert("Ocorreu um erro ao ler o arquivo JSON.");
         }
     };
-    if (e.target.files[0]) {
-        fileReader.readAsText(e.target.files[0]);
-    }
+    fileReader.readAsText(file);
 }
 
 /* ==========================================================================
    UTILITÁRIOS
    ========================================================================== */
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
+    return (str || '').replace(/[&<>'"]/g, 
         tag => ({
             '&': '&amp;',
             '<': '&lt;',
