@@ -1,0 +1,797 @@
+{
+  "players": [
+    {
+      "id": "p_1",
+      "name": "Makiavel",
+      "contribTotal": 21901,
+      "contribSemanaAnterior": 8187,
+      "dailyHistory": {
+        "2026-07-28": 0,
+        "2026-07-29": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 21901,
+        "2026-07-29": 21901
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 8187
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_2",
+      "name": "ShiniXAenys",
+      "contribTotal": 57412,
+      "contribSemanaAnterior": 5084,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 57372
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 5084
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_3",
+      "name": "THIꞠAꞨ",
+      "contribTotal": 0,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 39564
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3450
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_4",
+      "name": "Obanai",
+      "contribTotal": 30000,
+      "contribSemanaAnterior": 8705,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 28511
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 8705
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_5",
+      "name": "LUCASTRALHAA",
+      "contribTotal": 22634,
+      "contribSemanaAnterior": 6156,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 21840
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 6156
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_6",
+      "name": "LOTOFACIL",
+      "contribTotal": 12570,
+      "contribSemanaAnterior": 4161,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 12569
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 4161
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_7",
+      "name": "PROJUDI",
+      "contribTotal": 5861,
+      "contribSemanaAnterior": 3113,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 5722
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3113
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_8",
+      "name": "ZeroX",
+      "contribTotal": 17861,
+      "contribSemanaAnterior": 3727,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 17405
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3727
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_9",
+      "name": "KaBuM",
+      "contribTotal": 15795,
+      "contribSemanaAnterior": 4807,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 15795
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 4807
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_10",
+      "name": "Goiás",
+      "contribTotal": 2006,
+      "contribSemanaAnterior": 515,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 1956
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 515
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_11",
+      "name": "RatoPelado",
+      "contribTotal": 1485,
+      "contribSemanaAnterior": 822,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 1280
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 822
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_12",
+      "name": "D3FENDII",
+      "contribTotal": 7569,
+      "contribSemanaAnterior": 6718,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 6895
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 6718
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_13",
+      "name": "FakeeMissoes",
+      "contribTotal": 30792,
+      "contribSemanaAnterior": 3204,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 30787
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3204
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_14",
+      "name": "GuTo™",
+      "contribTotal": 4957,
+      "contribSemanaAnterior": 2679,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 3818
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2679
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_15",
+      "name": "Manito",
+      "contribTotal": 16641,
+      "contribSemanaAnterior": 2478,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 16637
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2478
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_16",
+      "name": "Makumbeir0",
+      "contribTotal": 16464,
+      "contribSemanaAnterior": 3376,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 16464
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3376
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_17",
+      "name": "jNrpmj",
+      "contribTotal": 13736,
+      "contribSemanaAnterior": 2385,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 13736
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2385
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_18",
+      "name": "SucoDeFruta",
+      "contribTotal": 280,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 254
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_19",
+      "name": "ANTICRITICO",
+      "contribTotal": 4373,
+      "contribSemanaAnterior": 3607,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 4170
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3607
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_20",
+      "name": "Amostradinho",
+      "contribTotal": 22891,
+      "contribSemanaAnterior": 5971,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 22542
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 5971
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_21",
+      "name": "Frash",
+      "contribTotal": 7956,
+      "contribSemanaAnterior": 5091,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 7931
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 5091
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_22",
+      "name": "DrKingSchultz",
+      "contribTotal": 10119,
+      "contribSemanaAnterior": 2173,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 9757
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2173
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_23",
+      "name": "Chavinho",
+      "contribTotal": 9152,
+      "contribSemanaAnterior": 94,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 9152
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 94
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_24",
+      "name": "♡HAISA♡",
+      "contribTotal": 4484,
+      "contribSemanaAnterior": 3885,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 4484
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3885
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_25",
+      "name": "Lucascrt",
+      "contribTotal": 9035,
+      "contribSemanaAnterior": 901,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 8539
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 901
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_26",
+      "name": "FEBEMKing",
+      "contribTotal": 693,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 286
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_27",
+      "name": "Arastados",
+      "contribTotal": 909,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 152
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_28",
+      "name": "Luffy",
+      "contribTotal": 2848,
+      "contribSemanaAnterior": 618,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 2459
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 618
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_29",
+      "name": "Norbita",
+      "contribTotal": 19855,
+      "contribSemanaAnterior": 3567,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 19524
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3567
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_30",
+      "name": "Showto",
+      "contribTotal": 6162,
+      "contribSemanaAnterior": 1479,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 6162
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 1479
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_31",
+      "name": "Aguidinha",
+      "contribTotal": 9972,
+      "contribSemanaAnterior": 3634,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 9932
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3634
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_32",
+      "name": "Mitsuya™",
+      "contribTotal": 5364,
+      "contribSemanaAnterior": 3831,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 4949
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3831
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_33",
+      "name": "PigKiller",
+      "contribTotal": 0,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 1804
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 304
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_34",
+      "name": "RealGu",
+      "contribTotal": 10343,
+      "contribSemanaAnterior": 3055,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 10343
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3055
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_35",
+      "name": "pepz",
+      "contribTotal": 11704,
+      "contribSemanaAnterior": 3520,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 11528
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 3520
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_36",
+      "name": "Pichii",
+      "contribTotal": 2571,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 2442
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_37",
+      "name": "GuTo",
+      "contribTotal": 7288,
+      "contribSemanaAnterior": 4827,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 7288
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 4827
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_38",
+      "name": "Juniorpmj",
+      "contribTotal": 8217,
+      "contribSemanaAnterior": 1839,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 8217
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 1839
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_39",
+      "name": "Cavendish",
+      "contribTotal": 0,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 18896
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 5231
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_40",
+      "name": "TaaZ",
+      "contribTotal": 8342,
+      "contribSemanaAnterior": 6090,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 7239
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 6090
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_41",
+      "name": "Bk",
+      "contribTotal": 6074,
+      "contribSemanaAnterior": 2804,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 6074
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2804
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_42",
+      "name": "♪Alexay♪",
+      "contribTotal": 6963,
+      "contribSemanaAnterior": 111,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 6963
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 111
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_43",
+      "name": "bibish",
+      "contribTotal": 10996,
+      "contribSemanaAnterior": 2669,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 10842
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 2669
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_44",
+      "name": "Jubileu",
+      "contribTotal": 1632,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 937
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_45",
+      "name": "JoãoFrango",
+      "contribTotal": 1672,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 937
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 0
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_46",
+      "name": "ZeroXx",
+      "contribTotal": 1983,
+      "contribSemanaAnterior": 1135,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 1983
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 1135
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_47",
+      "name": "MEDUSA",
+      "contribTotal": 2800,
+      "contribSemanaAnterior": 138,
+      "dailyHistory": {
+        "2026-07-28": 0
+      },
+      "totalHistory": {
+        "2026-07-28": 2162
+      },
+      "prevWeekHistory": {
+        "2026-07-28": 138
+      },
+      "lastUpdated": "2026-07-28T21:30:00.000Z"
+    },
+    {
+      "id": "p_1785332427639",
+      "name": "AKAZA",
+      "contribTotal": 39564,
+      "contribSemanaAnterior": 3450,
+      "dailyHistory": {},
+      "totalHistory": {},
+      "prevWeekHistory": {}
+    },
+    {
+      "id": "p_1785332883967",
+      "name": "PELÉBRANCO",
+      "contribTotal": 297,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {},
+      "totalHistory": {},
+      "prevWeekHistory": {}
+    },
+    {
+      "id": "p_1785333028307",
+      "name": "Surspirão",
+      "contribTotal": 177,
+      "contribSemanaAnterior": 0,
+      "dailyHistory": {},
+      "totalHistory": {},
+      "prevWeekHistory": {}
+    },
+    {
+      "id": "p_1785333197834",
+      "name": "Alfredo",
+      "contribTotal": 2805,
+      "contribSemanaAnterior": 1814,
+      "dailyHistory": {},
+      "totalHistory": {},
+      "prevWeekHistory": {}
+    }
+  ],
+  "history": {
+    "2026-07-28": {}
+  }
+}
