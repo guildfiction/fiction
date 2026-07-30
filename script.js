@@ -14,7 +14,7 @@ let state = {
 let selectedDate = '';
 let currentRankingMode = 'total'; 
 
-// Estado de ordenação da tabela principal
+// Estado de ordenação global da tabela
 window.mainTableSort = {
     column: null, 
     direction: 'desc' 
@@ -82,9 +82,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
+    // ATIVA A ORDENAÇÃO NO CLIQUE DA TABELA (DELEGAÇÃO DE EVENTO INFALÍVEL)
+    const mainTableHeaderRow = document.getElementById('mainTableHeaderRow');
+    if (mainTableHeaderRow) {
+        mainTableHeaderRow.addEventListener('click', (e) => {
+            const th = e.target.closest('th');
+            if (!th || th.classList.contains('admin-only')) return;
+
+            const weekday = th.getAttribute('data-weekday');
+            const headers = Array.from(mainTableHeaderRow.children);
+            const index = headers.indexOf(th);
+            let colKey;
+
+            if (weekday !== null) {
+                colKey = parseInt(weekday); // 0 a 6 para os dias
+            } else if (index === 0) {
+                colKey = 'name';
+            } else if (index === 1) {
+                colKey = 'total';
+            } else if (index === 2) {
+                colKey = 'prev';
+            } else if (th.classList.contains('col-highlight')) {
+                colKey = 'weekTotal';
+            }
+
+            if (colKey !== undefined) {
+                if (window.mainTableSort.column === colKey) {
+                    window.mainTableSort.direction = window.mainTableSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    window.mainTableSort.column = colKey;
+                    window.mainTableSort.direction = 'desc';
+                }
+                renderMainTable();
+            }
+        });
+    }
+
     renderApp();
     initSupabase();
-    attachHeaderSortEvents();
 });
 
 async function initSupabase() {
@@ -225,56 +260,13 @@ function getWeekDates(dateString) {
     return weekDates;
 }
 
-/* ==========================================================================
-   FUNÇÃO DE ORDENAÇÃO DIRETA DAS COLUNAS
-   ========================================================================== */
-
-window.sortTableBy = function(columnKey) {
-    if (window.mainTableSort.column === columnKey) {
-        window.mainTableSort.direction = window.mainTableSort.direction === 'asc' ? 'desc' : 'asc';
-    } else {
-        window.mainTableSort.column = columnKey;
-        window.mainTableSort.direction = 'desc';
-    }
-    renderMainTable();
-};
-
-function attachHeaderSortEvents() {
-    const headers = document.querySelectorAll('#mainTableHeaderRow th');
-    headers.forEach((th, index) => {
-        if (th.classList.contains('admin-only')) return;
-
-        th.style.cursor = 'pointer';
-        th.style.userSelect = 'none';
-        th.title = 'Clique para ordenar esta coluna';
-
-        th.onclick = () => {
-            const weekday = th.getAttribute('data-weekday');
-            let colKey;
-
-            if (weekday !== null) {
-                colKey = parseInt(weekday); // 0 a 6 para os dias
-            } else if (index === 0) {
-                colKey = 'name';
-            } else if (index === 1) {
-                colKey = 'total';
-            } else if (index === 2) {
-                colKey = 'prev';
-            } else if (th.classList.contains('col-highlight')) {
-                colKey = 'weekTotal';
-            }
-
-            if (colKey !== undefined) {
-                window.sortTableBy(colKey);
-            }
-        };
-    });
-}
-
 function updateSortIcons() {
     const headers = document.querySelectorAll('#mainTableHeaderRow th');
 
     headers.forEach((th, index) => {
+        if (th.classList.contains('admin-only')) return;
+        th.style.cursor = 'pointer';
+
         const weekday = th.getAttribute('data-weekday');
         let key;
 
@@ -291,7 +283,7 @@ function updateSortIcons() {
             const icon = document.createElement('span');
             icon.className = 'sort-icon';
             icon.style.marginLeft = '4px';
-            icon.style.color = 'var(--primary-gold)';
+            icon.style.color = '#f1c40f';
             icon.innerHTML = window.mainTableSort.direction === 'asc' ? ' ▲' : ' ▼';
             th.appendChild(icon);
         }
