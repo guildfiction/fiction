@@ -1,9 +1,9 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime - Corrigida)
  */
 
 let isAdmin = false;
-let adminPassword = "1234";
+let adminPassword = "1234"; // Senha padrão do Administrador
 
 let state = {
     players: []
@@ -126,11 +126,14 @@ async function loadSettingsFromSupabase() {
         if (typeof window.supabaseClient === 'undefined') return;
         const { data, error } = await window.supabaseClient.from('guild_settings').select('*');
         if (!error && data) {
-            const passSetting = data.find(s => s.setting_key === 'admin_password' || s.setting_key === 'admin_password_hash');
-            if (passSetting) adminPassword = passSetting.setting_value;
+            // Busca especificamente a senha em texto puro no banco, se existir
+            const passSetting = data.find(s => s.setting_key === 'admin_password');
+            if (passSetting && passSetting.setting_value) {
+                adminPassword = passSetting.setting_value;
+            }
 
             const nameSetting = data.find(s => s.setting_key === 'guild_name');
-            if (nameSetting) {
+            if (nameSetting && nameSetting.setting_value) {
                 const el = document.getElementById('guildName');
                 if (el) el.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Guilda ${nameSetting.setting_value}`;
             }
