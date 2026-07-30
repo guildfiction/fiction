@@ -1,16 +1,22 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime - Corrigida)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime + Ordenação por Colunas)
  */
 
 let isAdmin = false;
-let adminPassword = "fiction1234"; // Senha padrão do Administrador
+let adminPassword = "1234"; 
 
 let state = {
     players: []
 };
 
 let selectedDate = '';
-let currentRankingMode = 'total';
+let currentRankingMode = 'total'; 
+
+// Estado da ordenação da tabela principal
+let mainTableSort = {
+    column: null, // 'name', 'total', 'prev', 'weekTotal' ou número da coluna do dia (0 a 6)
+    direction: 'desc' // 'asc' ou 'desc'
+};
 
 const WEEKDAYS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
@@ -74,6 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
+    // Configura evento de clique nos cabeçalhos da tabela principal para ordenação
+    setupMainTableSortHeaders();
+
     renderApp();
     initSupabase();
 });
@@ -126,7 +135,6 @@ async function loadSettingsFromSupabase() {
         if (typeof window.supabaseClient === 'undefined') return;
         const { data, error } = await window.supabaseClient.from('guild_settings').select('*');
         if (!error && data) {
-            // Busca especificamente a senha em texto puro no banco, se existir
             const passSetting = data.find(s => s.setting_key === 'admin_password');
             if (passSetting && passSetting.setting_value) {
                 adminPassword = passSetting.setting_value;
@@ -215,6 +223,77 @@ function getWeekDates(dateString) {
         weekDates.push(d.toISOString().split('T')[0]);
     }
     return weekDates;
+}
+
+/* ==========================================================================
+   CONFIGURAÇÃO E ORDENAÇÃO DE COLUNAS DA TABELA PRINCIPAL
+   ========================================================================== */
+
+function setupMainTableSortHeaders() {
+    const headers = document.querySelectorAll('#mainTableHeaderRow th');
+    headers.forEach((th, index) => {
+        // Se for a coluna de Ações (Admin), não precisa de clique
+        if (th.classList.contains('admin-only')) return;
+
+        th.style.cursor = 'pointer';
+        th.title = 'Clique para ordenar';
+
+        th.addEventListener('click', () => {
+            let columnKey;
+            const weekday = th.getAttribute('data-weekday');
+
+            if (weekday !== null) {
+                columnKey = parseInt(weekday); // 0 a 6 para os dias da semana (Seg, Ter...)
+            } else if (index === 0) {
+                columnKey = 'name';
+            } else if (index === 1) {
+                columnKey = 'total';
+            } else if (index === 2) {
+                columnKey = 'prev';
+            } else if (th.classList.contains('col-highlight')) {
+                columnKey = 'weekTotal';
+            }
+
+            if (mainTableSort.column === columnKey) {
+                // Inverte a direção se for o mesmo cabeçalho
+                mainTableSort.direction = mainTableSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                // Nova coluna: padrão descendente (maior para o menor)
+                mainTableSort.column = columnKey;
+                mainTableSort.direction = 'desc';
+            }
+
+            renderMainTable();
+        });
+    });
+}
+
+function updateSortIcons() {
+    const weekDates = getWeekDates(selectedDate);
+    const headers = document.querySelectorAll('#mainTableHeaderRow th');
+
+    headers.forEach((th, index) => {
+        const weekday = th.getAttribute('data-weekday');
+        let key;
+
+        if (weekday !== null) key = parseInt(weekday);
+        else if (index === 0) key = 'name';
+        else if (index === 1) key = 'total';
+        else if (index === 2) key = 'prev';
+        else if (th.classList.contains('col-highlight')) key = 'weekTotal';
+
+        // Remove ícone antigo de seta se houver
+        const icon = th.querySelector('.sort-icon');
+        if (icon) icon.remove();
+
+        if (mainTableSort.column === key) {
+            const arrow = document.createElement('i');
+            arrow.className = `fa-solid fa-sort-${mainTableSort.direction === 'asc' ? 'up' : 'down'} sort-icon`;
+            arrow.style.marginLeft = '5px';
+            arrow.style.fontSize = '0.8rem';
+            th.appendChild(arrow);
+        }
+    });
 }
 
 async function handleAddPlayer(e) {
@@ -358,7 +437,39 @@ function renderMainTable() {
     const filter = searchPlayerInput ? searchPlayerInput.value.toLowerCase().trim() : '';
     const weekDates = getWeekDates(selectedDate);
 
-    const filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
+    let filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
+
+    // LÓGICA DE ORDENAÇÃO DINÂMICA DA TABELA
+    if (mainTableSort.column !== null) {
+        filtered.sort((a, b) => {
+            let valA, valB;
+
+            if (typeof mainTableSort.column === 'number') {
+                // Ordenação por dia específico da semana (0 = Seg, 1 = Ter...)
+                const dateKey = weekDates[mainTableSort.column];
+                valA = a.dailyHistory ? (a.dailyHistory[dateKey] || 0) : 0;
+                valB = b.dailyHistory ? (b.dailyHistory[dateKey] || 0) : 0;
+            } else if (mainTableSort.column === 'name') {
+                valA = a.name.toLowerCase();
+                valB = b.name.toLowerCase();
+            } else if (mainTableSort.column === 'total') {
+                valA = a.contribTotal || 0;
+                valB = b.contribTotal || 0;
+            } else if (mainTableSort.column === 'prev') {
+                valA = a.contribSemanaAnterior || 0;
+                valB = b.contribSemanaAnterior || 0;
+            } else if (mainTableSort.column === 'weekTotal') {
+                valA = weekDates.reduce((acc, d) => acc + (a.dailyHistory ? (a.dailyHistory[d] || 0) : 0), 0);
+                valB = weekDates.reduce((acc, d) => acc + (b.dailyHistory ? (b.dailyHistory[d] || 0) : 0), 0);
+            }
+
+            if (valA < valB) return mainTableSort.direction === 'asc' ? -1 : 1;
+            if (valA > valB) return mainTableSort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    updateSortIcons();
 
     if (filtered.length === 0) {
         mainTableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; color:var(--text-muted);">Nenhum jogador cadastrado.</td></tr>`;
