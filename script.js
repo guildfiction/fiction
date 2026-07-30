@@ -1,9 +1,11 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime + Ordenação por Colunas)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK
+ * Banco: Supabase Realtime
+ * Senha Admin: fiction1234
  */
 
 let isAdmin = false;
-let adminPassword = "1234"; 
+let adminPassword = "fiction1234"; // Nova senha configurada
 
 let state = {
     players: []
@@ -12,10 +14,10 @@ let state = {
 let selectedDate = '';
 let currentRankingMode = 'total'; 
 
-// Estado da ordenação da tabela principal
+// Estado de ordenação da tabela
 let mainTableSort = {
-    column: null, // 'name', 'total', 'prev', 'weekTotal' ou número da coluna do dia (0 a 6)
-    direction: 'desc' // 'asc' ou 'desc'
+    column: null, 
+    direction: 'desc' 
 };
 
 const WEEKDAYS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
-    // Configura evento de clique nos cabeçalhos da tabela principal para ordenação
+    // Ativa o clique nos cabeçalhos da tabela
     setupMainTableSortHeaders();
 
     renderApp();
@@ -226,24 +228,23 @@ function getWeekDates(dateString) {
 }
 
 /* ==========================================================================
-   CONFIGURAÇÃO E ORDENAÇÃO DE COLUNAS DA TABELA PRINCIPAL
+   SISTEMA DE ORDENAÇÃO POR COLUNAS DA TABELA
    ========================================================================== */
 
 function setupMainTableSortHeaders() {
     const headers = document.querySelectorAll('#mainTableHeaderRow th');
     headers.forEach((th, index) => {
-        // Se for a coluna de Ações (Admin), não precisa de clique
         if (th.classList.contains('admin-only')) return;
 
         th.style.cursor = 'pointer';
-        th.title = 'Clique para ordenar';
+        th.title = 'Clique para ordenar esta coluna';
 
-        th.addEventListener('click', () => {
+        th.onclick = () => {
             let columnKey;
             const weekday = th.getAttribute('data-weekday');
 
             if (weekday !== null) {
-                columnKey = parseInt(weekday); // 0 a 6 para os dias da semana (Seg, Ter...)
+                columnKey = parseInt(weekday); // 0 a 6 para os dias da semana
             } else if (index === 0) {
                 columnKey = 'name';
             } else if (index === 1) {
@@ -255,21 +256,19 @@ function setupMainTableSortHeaders() {
             }
 
             if (mainTableSort.column === columnKey) {
-                // Inverte a direção se for o mesmo cabeçalho
+                // Alterna entre Maior->Menor e Menor->Maior
                 mainTableSort.direction = mainTableSort.direction === 'asc' ? 'desc' : 'asc';
             } else {
-                // Nova coluna: padrão descendente (maior para o menor)
                 mainTableSort.column = columnKey;
-                mainTableSort.direction = 'desc';
+                mainTableSort.direction = 'desc'; // Padrão: maior para o menor
             }
 
             renderMainTable();
-        });
+        };
     });
 }
 
 function updateSortIcons() {
-    const weekDates = getWeekDates(selectedDate);
     const headers = document.querySelectorAll('#mainTableHeaderRow th');
 
     headers.forEach((th, index) => {
@@ -282,15 +281,16 @@ function updateSortIcons() {
         else if (index === 2) key = 'prev';
         else if (th.classList.contains('col-highlight')) key = 'weekTotal';
 
-        // Remove ícone antigo de seta se houver
-        const icon = th.querySelector('.sort-icon');
-        if (icon) icon.remove();
+        // Remove setas antigas
+        const existingIcon = th.querySelector('.sort-icon');
+        if (existingIcon) existingIcon.remove();
 
+        // Adiciona seta na coluna ativa
         if (mainTableSort.column === key) {
             const arrow = document.createElement('i');
             arrow.className = `fa-solid fa-sort-${mainTableSort.direction === 'asc' ? 'up' : 'down'} sort-icon`;
-            arrow.style.marginLeft = '5px';
-            arrow.style.fontSize = '0.8rem';
+            arrow.style.marginLeft = '6px';
+            arrow.style.color = 'var(--primary-gold)';
             th.appendChild(arrow);
         }
     });
@@ -439,13 +439,12 @@ function renderMainTable() {
 
     let filtered = (state.players || []).filter(p => p.name.toLowerCase().includes(filter));
 
-    // LÓGICA DE ORDENAÇÃO DINÂMICA DA TABELA
+    // APLICAÇÃO DA ORDENAÇÃO AO CLICAR NA COLUNA
     if (mainTableSort.column !== null) {
         filtered.sort((a, b) => {
             let valA, valB;
 
             if (typeof mainTableSort.column === 'number') {
-                // Ordenação por dia específico da semana (0 = Seg, 1 = Ter...)
                 const dateKey = weekDates[mainTableSort.column];
                 valA = a.dailyHistory ? (a.dailyHistory[dateKey] || 0) : 0;
                 valB = b.dailyHistory ? (b.dailyHistory[dateKey] || 0) : 0;
