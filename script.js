@@ -1,20 +1,19 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime - Corrigida)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime)
  */
 
 let isAdmin = false;
-let adminPassword = "fiction1234"; // Valor padrão, sincronizado via guild_settings
+let adminPassword = "1234";
 
 let state = {
     players: []
 };
 
 let selectedDate = '';
-let currentRankingMode = 'total'; // 'total', 'prev', 'week'
+let currentRankingMode = 'total';
 
 const WEEKDAYS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
-// Elementos DOM
 let currentDateInput, statTotalPlayers, statTotalToday, statTotalWeek, statAverage, statTopPlayer;
 let addPlayerForm, playerNameInput, searchPlayerInput;
 let mainTableBody, rankingTableBody;
@@ -22,7 +21,6 @@ let btnResetDay, btnRankTotal, btnRankPrev, btnRankWeek, btnAdminLogin;
 let playerModal, modalPlayerDetails, closeModalBtn;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mapeia todos os elementos da tela
     currentDateInput = document.getElementById('currentDate');
     statTotalPlayers = document.getElementById('statTotalPlayers');
     statTotalToday = document.getElementById('statTotalToday');
@@ -47,15 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modalPlayerDetails = document.getElementById('modalPlayerDetails');
     closeModalBtn = document.querySelector('.close-modal');
 
-    // 2. Data inicial
     const today = new Date().toISOString().split('T')[0];
     if (currentDateInput) currentDateInput.value = today;
     selectedDate = today;
 
-    // 3. REGISTRA OS EVENTOS DE CLIQUE PRIMEIRO (Para funcionar imediatamente)
-    if (btnAdminLogin) {
-        btnAdminLogin.addEventListener('click', toggleAdminMode);
-    }
+    if (btnAdminLogin) btnAdminLogin.addEventListener('click', toggleAdminMode);
 
     if (currentDateInput) {
         currentDateInput.addEventListener('change', (e) => {
@@ -80,10 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
-    // 4. Renderiza estado inicial
     renderApp();
-
-    // 5. Inicia o carregamento assíncrono do Supabase sem travar os cliques
     initSupabase();
 });
 
@@ -96,10 +87,6 @@ async function initSupabase() {
         console.error("Erro ao inicializar Supabase:", e);
     }
 }
-
-/* ==========================================================================
-   AÇÕES DO ADMINISTRADOR
-   ========================================================================== */
 
 function toggleAdminMode() {
     const btn = document.getElementById('btnAdminLogin');
@@ -132,17 +119,12 @@ function toggleAdminMode() {
     }
 }
 
-// Expõe a função globalmente por garantia
 window.toggleAdminMode = toggleAdminMode;
-
-/* ==========================================================================
-   INTEGRAÇÃO SUPABASE & REALTIME
-   ========================================================================== */
 
 async function loadSettingsFromSupabase() {
     try {
-        if (typeof supabase === 'undefined') return;
-        const { data, error } = await supabase.from('guild_settings').select('*');
+        if (typeof window.supabaseClient === 'undefined') return;
+        const { data, error } = await window.supabaseClient.from('guild_settings').select('*');
         if (!error && data) {
             const passSetting = data.find(s => s.setting_key === 'admin_password' || s.setting_key === 'admin_password_hash');
             if (passSetting) adminPassword = passSetting.setting_value;
@@ -160,14 +142,12 @@ async function loadSettingsFromSupabase() {
 
 async function loadFromSupabase() {
     try {
-        if (typeof supabase === 'undefined') return;
+        if (typeof window.supabaseClient === 'undefined') return;
         
-        // Busca jogadores
-        const { data: playersData, error: pErr } = await supabase.from('players').select('*').order('name', { ascending: true });
+        const { data: playersData, error: pErr } = await window.supabaseClient.from('players').select('*').order('name', { ascending: true });
         if (pErr) throw pErr;
 
-        // Busca histórico de contribuições
-        const { data: contribsData, error: cErr } = await supabase.from('contributions').select('*');
+        const { data: contribsData, error: cErr } = await window.supabaseClient.from('contributions').select('*');
         if (cErr) throw cErr;
 
         state.players = (playersData || []).map(p => {
@@ -198,8 +178,8 @@ async function loadFromSupabase() {
 }
 
 function setupRealtime() {
-    if (typeof supabase === 'undefined') return;
-    supabase
+    if (typeof window.supabaseClient === 'undefined') return;
+    window.supabaseClient
         .channel('schema-db-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, () => loadFromSupabase())
         .on('postgres_changes', { event: '*', schema: 'public', table: 'contributions' }, () => loadFromSupabase())
@@ -241,7 +221,7 @@ async function handleAddPlayer(e) {
     const name = playerNameInput.value.trim();
     if (!name) return;
 
-    const { error } = await supabase.from('players').insert([
+    const { error } = await window.supabaseClient.from('players').insert([
         { name, contrib_total: 0, contrib_semana_anterior: 0 }
     ]);
 
@@ -261,7 +241,7 @@ async function editPlayer(id) {
 
     const newName = prompt("Edite o nome do jogador:", player.name);
     if (newName && newName.trim() !== "") {
-        const { error } = await supabase.from('players').update({ name: newName.trim() }).eq('id', id);
+        const { error } = await window.supabaseClient.from('players').update({ name: newName.trim() }).eq('id', id);
         if (error) console.error("Erro ao editar nome:", error);
         else await loadFromSupabase();
     }
@@ -273,7 +253,7 @@ async function deletePlayer(id) {
     if (!player) return;
 
     if (confirm(`Excluir o jogador "${player.name}"?`)) {
-        const { error } = await supabase.from('players').delete().eq('id', id);
+        const { error } = await window.supabaseClient.from('players').delete().eq('id', id);
         if (error) console.error("Erro ao excluir jogador:", error);
         else await loadFromSupabase();
     }
@@ -292,7 +272,7 @@ async function saveDailyInput(playerId, dateKey) {
     let calculatedDaily = newEnteredTotal - previousTotal;
     if (calculatedDaily < 0) calculatedDaily = 0;
 
-    const { error: cErr } = await supabase.from('contributions').upsert({
+    const { error: cErr } = await window.supabaseClient.from('contributions').upsert({
         player_id: playerId,
         date_key: dateKey,
         entered_total: newEnteredTotal,
@@ -301,7 +281,7 @@ async function saveDailyInput(playerId, dateKey) {
 
     if (cErr) console.error("Erro ao salvar contribuição:", cErr);
 
-    const { error: pErr } = await supabase.from('players').update({
+    const { error: pErr } = await window.supabaseClient.from('players').update({
         contrib_total: newEnteredTotal
     }).eq('id', playerId);
 
@@ -321,7 +301,7 @@ async function updateMainPlayerTotals(playerId) {
     const newTotal = totEl ? (parseInt(totEl.value) || 0) : player.contribTotal;
     const newPrev = prevEl ? (parseInt(prevEl.value) || 0) : player.contribSemanaAnterior;
 
-    const { error } = await supabase.from('players').update({
+    const { error } = await window.supabaseClient.from('players').update({
         contrib_total: newTotal,
         contrib_semana_anterior: newPrev
     }).eq('id', playerId);
@@ -333,15 +313,11 @@ async function updateMainPlayerTotals(playerId) {
 async function handleResetDay() {
     if (!isAdmin) return;
     if (confirm(`Deseja zerar os registros da data ${selectedDate}?`)) {
-        const { error } = await supabase.from('contributions').delete().eq('date_key', selectedDate);
+        const { error } = await window.supabaseClient.from('contributions').delete().eq('date_key', selectedDate);
         if (error) console.error("Erro ao zerar o dia:", error);
         else await loadFromSupabase();
     }
 }
-
-/* ==========================================================================
-   RENDERIZAÇÃO E REGRAS DE CORES
-   ========================================================================== */
 
 function renderApp() {
     renderMainTable();
@@ -364,10 +340,10 @@ function updateHeaderColors() {
         });
 
         if (hasPositiveContrib) {
-            cell.style.color = '#2ecc71'; // Verde
+            cell.style.color = '#2ecc71';
             cell.style.fontWeight = 'bold';
         } else {
-            cell.style.color = '#e74c3c'; // Vermelho
+            cell.style.color = '#e74c3c';
             cell.style.fontWeight = 'normal';
         }
     });
