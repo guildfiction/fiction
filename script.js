@@ -35,8 +35,6 @@ const btnRankTotal = document.getElementById('btnRankTotal');
 const btnRankPrev = document.getElementById('btnRankPrev');
 const btnRankWeek = document.getElementById('btnRankWeek');
 
-const btnAdminLogin = document.getElementById('btnAdminLogin');
-
 const playerModal = document.getElementById('playerModal');
 const modalPlayerDetails = document.getElementById('modalPlayerDetails');
 const closeModalBtn = document.querySelector('.close-modal');
@@ -70,7 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnRankPrev) btnRankPrev.addEventListener('click', () => setRankingMode('prev', btnRankPrev));
     if (btnRankWeek) btnRankWeek.addEventListener('click', () => setRankingMode('week', btnRankWeek));
 
-    if (btnAdminLogin) btnAdminLogin.addEventListener('click', toggleAdminMode);
+    // Captura dinâmica do botão de Admin para evitar falhas de carregamento
+    const btnAdminLogin = document.getElementById('btnAdminLogin');
+    if (btnAdminLogin) {
+        btnAdminLogin.addEventListener('click', toggleAdminMode);
+    }
 
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', () => playerModal.style.display = 'none');
@@ -158,12 +160,15 @@ function setupRealtime() {
    ========================================================================== */
 
 function toggleAdminMode() {
+    const btn = document.getElementById('btnAdminLogin');
     if (isAdmin) {
         isAdmin = false;
         document.body.classList.remove('is-admin');
-        btnAdminLogin.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Leitor';
-        btnAdminLogin.classList.remove('btn-danger');
-        btnAdminLogin.classList.add('btn-warning');
+        if (btn) {
+            btn.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Leitor';
+            btn.classList.remove('btn-danger');
+            btn.classList.add('btn-warning');
+        }
         alert("Você saiu do Modo Administrador.");
         renderApp();
     } else {
@@ -171,9 +176,11 @@ function toggleAdminMode() {
         if (passwordInput === adminPassword) {
             isAdmin = true;
             document.body.classList.add('is-admin');
-            btnAdminLogin.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
-            btnAdminLogin.classList.remove('btn-warning');
-            btnAdminLogin.classList.add('btn-danger');
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
+                btn.classList.remove('btn-warning');
+                btn.classList.add('btn-danger');
+            }
             alert("Modo Administrador ativado!");
             renderApp();
         } else if (passwordInput !== null) {
