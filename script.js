@@ -1,5 +1,5 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime - Corrigida)
  */
 
 let isAdmin = false;
@@ -15,43 +15,48 @@ let currentRankingMode = 'total'; // 'total', 'prev', 'week'
 const WEEKDAYS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
 // Elementos DOM
-const currentDateInput = document.getElementById('currentDate');
-const statTotalPlayers = document.getElementById('statTotalPlayers');
-const statTotalToday = document.getElementById('statTotalToday');
-const statTotalWeek = document.getElementById('statTotalWeek');
-const statAverage = document.getElementById('statAverage');
-const statTopPlayer = document.getElementById('statTopPlayer');
+let currentDateInput, statTotalPlayers, statTotalToday, statTotalWeek, statAverage, statTopPlayer;
+let addPlayerForm, playerNameInput, searchPlayerInput;
+let mainTableBody, rankingTableBody;
+let btnResetDay, btnRankTotal, btnRankPrev, btnRankWeek, btnAdminLogin;
+let playerModal, modalPlayerDetails, closeModalBtn;
 
-const addPlayerForm = document.getElementById('addPlayerForm');
-const playerNameInput = document.getElementById('playerNameInput');
-const searchPlayerInput = document.getElementById('searchPlayerInput');
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Mapeia todos os elementos da tela
+    currentDateInput = document.getElementById('currentDate');
+    statTotalPlayers = document.getElementById('statTotalPlayers');
+    statTotalToday = document.getElementById('statTotalToday');
+    statTotalWeek = document.getElementById('statTotalWeek');
+    statAverage = document.getElementById('statAverage');
+    statTopPlayer = document.getElementById('statTopPlayer');
 
-const mainTableBody = document.getElementById('mainTableBody');
-const rankingTableBody = document.getElementById('rankingTableBody');
+    addPlayerForm = document.getElementById('addPlayerForm');
+    playerNameInput = document.getElementById('playerNameInput');
+    searchPlayerInput = document.getElementById('searchPlayerInput');
 
-const btnResetDay = document.getElementById('btnResetDay');
+    mainTableBody = document.getElementById('mainTableBody');
+    rankingTableBody = document.getElementById('rankingTableBody');
 
-const btnRankTotal = document.getElementById('btnRankTotal');
-const btnRankPrev = document.getElementById('btnRankPrev');
-const btnRankWeek = document.getElementById('btnRankWeek');
+    btnResetDay = document.getElementById('btnResetDay');
+    btnRankTotal = document.getElementById('btnRankTotal');
+    btnRankPrev = document.getElementById('btnRankPrev');
+    btnRankWeek = document.getElementById('btnRankWeek');
+    btnAdminLogin = document.getElementById('btnAdminLogin');
 
-const playerModal = document.getElementById('playerModal');
-const modalPlayerDetails = document.getElementById('modalPlayerDetails');
-const closeModalBtn = document.querySelector('.close-modal');
+    playerModal = document.getElementById('playerModal');
+    modalPlayerDetails = document.getElementById('modalPlayerDetails');
+    closeModalBtn = document.querySelector('.close-modal');
 
-document.addEventListener('DOMContentLoaded', async () => {
+    // 2. Data inicial
     const today = new Date().toISOString().split('T')[0];
     if (currentDateInput) currentDateInput.value = today;
     selectedDate = today;
 
-    // 1. Carrega dados e configurações do Supabase
-    await loadSettingsFromSupabase();
-    await loadFromSupabase();
+    // 3. REGISTRA OS EVENTOS DE CLIQUE PRIMEIRO (Para funcionar imediatamente)
+    if (btnAdminLogin) {
+        btnAdminLogin.addEventListener('click', toggleAdminMode);
+    }
 
-    // 2. Conecta a Sincronização em Tempo Real (Realtime)
-    setupRealtime();
-
-    // 3. Event Listeners
     if (currentDateInput) {
         currentDateInput.addEventListener('change', (e) => {
             selectedDate = e.target.value;
@@ -68,12 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnRankPrev) btnRankPrev.addEventListener('click', () => setRankingMode('prev', btnRankPrev));
     if (btnRankWeek) btnRankWeek.addEventListener('click', () => setRankingMode('week', btnRankWeek));
 
-    // Captura dinâmica do botão de Admin para evitar falhas de carregamento
-    const btnAdminLogin = document.getElementById('btnAdminLogin');
-    if (btnAdminLogin) {
-        btnAdminLogin.addEventListener('click', toggleAdminMode);
-    }
-
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', () => playerModal.style.display = 'none');
     }
@@ -81,8 +80,60 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target === playerModal) playerModal.style.display = 'none';
     });
 
+    // 4. Renderiza estado inicial
     renderApp();
+
+    // 5. Inicia o carregamento assíncrono do Supabase sem travar os cliques
+    initSupabase();
 });
+
+async function initSupabase() {
+    try {
+        await loadSettingsFromSupabase();
+        await loadFromSupabase();
+        setupRealtime();
+    } catch (e) {
+        console.error("Erro ao inicializar Supabase:", e);
+    }
+}
+
+/* ==========================================================================
+   AÇÕES DO ADMINISTRADOR
+   ========================================================================== */
+
+function toggleAdminMode() {
+    const btn = document.getElementById('btnAdminLogin');
+    
+    if (isAdmin) {
+        isAdmin = false;
+        document.body.classList.remove('is-admin');
+        if (btn) {
+            btn.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Leitor';
+            btn.classList.remove('btn-danger');
+            btn.classList.add('btn-warning');
+        }
+        alert("Você saiu do Modo Administrador.");
+        renderApp();
+    } else {
+        const passwordInput = prompt("Digite a senha de Administrador para editar:");
+        if (passwordInput === adminPassword) {
+            isAdmin = true;
+            document.body.classList.add('is-admin');
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
+                btn.classList.remove('btn-warning');
+                btn.classList.add('btn-danger');
+            }
+            alert("Modo Administrador ativado!");
+            renderApp();
+        } else if (passwordInput !== null) {
+            alert("Senha incorreta!");
+        }
+    }
+}
+
+// Expõe a função globalmente por garantia
+window.toggleAdminMode = toggleAdminMode;
 
 /* ==========================================================================
    INTEGRAÇÃO SUPABASE & REALTIME
@@ -90,6 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadSettingsFromSupabase() {
     try {
+        if (typeof supabase === 'undefined') return;
         const { data, error } = await supabase.from('guild_settings').select('*');
         if (!error && data) {
             const passSetting = data.find(s => s.setting_key === 'admin_password' || s.setting_key === 'admin_password_hash');
@@ -108,6 +160,8 @@ async function loadSettingsFromSupabase() {
 
 async function loadFromSupabase() {
     try {
+        if (typeof supabase === 'undefined') return;
+        
         // Busca jogadores
         const { data: playersData, error: pErr } = await supabase.from('players').select('*').order('name', { ascending: true });
         if (pErr) throw pErr;
@@ -144,6 +198,7 @@ async function loadFromSupabase() {
 }
 
 function setupRealtime() {
+    if (typeof supabase === 'undefined') return;
     supabase
         .channel('schema-db-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, () => loadFromSupabase())
@@ -153,40 +208,6 @@ function setupRealtime() {
             loadFromSupabase();
         })
         .subscribe();
-}
-
-/* ==========================================================================
-   AÇÕES DO ADMINISTRADOR (PERSISTIDAS NO SUPABASE)
-   ========================================================================== */
-
-function toggleAdminMode() {
-    const btn = document.getElementById('btnAdminLogin');
-    if (isAdmin) {
-        isAdmin = false;
-        document.body.classList.remove('is-admin');
-        if (btn) {
-            btn.innerHTML = '<i class="fa-solid fa-lock"></i> Modo Leitor';
-            btn.classList.remove('btn-danger');
-            btn.classList.add('btn-warning');
-        }
-        alert("Você saiu do Modo Administrador.");
-        renderApp();
-    } else {
-        const passwordInput = prompt("Digite a senha de Administrador para editar:");
-        if (passwordInput === adminPassword) {
-            isAdmin = true;
-            document.body.classList.add('is-admin');
-            if (btn) {
-                btn.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
-                btn.classList.remove('btn-warning');
-                btn.classList.add('btn-danger');
-            }
-            alert("Modo Administrador ativado!");
-            renderApp();
-        } else if (passwordInput !== null) {
-            alert("Senha incorreta!");
-        }
-    }
 }
 
 function setRankingMode(mode, activeBtn) {
@@ -271,7 +292,6 @@ async function saveDailyInput(playerId, dateKey) {
     let calculatedDaily = newEnteredTotal - previousTotal;
     if (calculatedDaily < 0) calculatedDaily = 0;
 
-    // 1. Salva na tabela contributions (upsert por player_id e date_key)
     const { error: cErr } = await supabase.from('contributions').upsert({
         player_id: playerId,
         date_key: dateKey,
@@ -281,7 +301,6 @@ async function saveDailyInput(playerId, dateKey) {
 
     if (cErr) console.error("Erro ao salvar contribuição:", cErr);
 
-    // 2. Atualiza a contribuição total do jogador
     const { error: pErr } = await supabase.from('players').update({
         contrib_total: newEnteredTotal
     }).eq('id', playerId);
@@ -339,13 +358,11 @@ function updateHeaderColors() {
         const weekdayIndex = parseInt(cell.getAttribute('data-weekday'));
         const dateKey = weekDates[weekdayIndex];
 
-        // Regra: Verifica se existe QUALQUER contribuição maior que zero no dia para os jogadores
         const hasPositiveContrib = (state.players || []).some(p => {
             const val = p.dailyHistory ? (p.dailyHistory[dateKey] || 0) : 0;
             return val > 0;
         });
 
-        // Aplicação direta da cor verde (se > 0) ou vermelha (se == 0)
         if (hasPositiveContrib) {
             cell.style.color = '#2ecc71'; // Verde
             cell.style.fontWeight = 'bold';
