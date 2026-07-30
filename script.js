@@ -3,7 +3,7 @@
  */
 
 let isAdmin = false;
-let adminPassword = "1234"; // Valor padrão, sincronizado via guild_settings
+let adminPassword = "fiction1234"; // Valor padrão, sincronizado via guild_settings
 
 let state = {
     players: []
