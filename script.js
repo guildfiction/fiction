@@ -1,18 +1,12 @@
 /**
- * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (V3 - Admin Protect)
+ * GERENCIADOR DE CONTRIBUIÇÃO DE GUILDA - DDTANK (Versão Supabase Realtime)
  */
 
-const PRIMARY_KEY = 'ddtank_guild_manager_v3_db';
-const BACKUP_KEYS = ['ddtank_guild_manager_v2_db', 'ddtank_guild_manager_db'];
-
-// SENHA PADRÃO DO ADMINISTRADOR
-const ADMIN_PASSWORD = "fiction1980"; // Você pode alterar esta senha se quiser
-
 let isAdmin = false;
+let adminPassword = "1234"; // Valor padrão, sincronizado via guild_settings
 
 let state = {
-    players: [],
-    history: {}
+    players: []
 };
 
 let selectedDate = '';
@@ -20,7 +14,7 @@ let currentRankingMode = 'total'; // 'total', 'prev', 'week'
 
 const WEEKDAYS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
-// DOM Elements
+// Elementos DOM
 const currentDateInput = document.getElementById('currentDate');
 const statTotalPlayers = document.getElementById('statTotalPlayers');
 const statTotalToday = document.getElementById('statTotalToday');
@@ -35,8 +29,6 @@ const searchPlayerInput = document.getElementById('searchPlayerInput');
 const mainTableBody = document.getElementById('mainTableBody');
 const rankingTableBody = document.getElementById('rankingTableBody');
 
-const btnExport = document.getElementById('btnExport');
-const importFileInput = document.getElementById('importFile');
 const btnResetDay = document.getElementById('btnResetDay');
 
 const btnRankTotal = document.getElementById('btnRankTotal');
@@ -49,13 +41,19 @@ const playerModal = document.getElementById('playerModal');
 const modalPlayerDetails = document.getElementById('modalPlayerDetails');
 const closeModalBtn = document.querySelector('.close-modal');
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const today = new Date().toISOString().split('T')[0];
     if (currentDateInput) currentDateInput.value = today;
     selectedDate = today;
 
-    loadFromLocalStorage();
+    // 1. Carrega dados e configurações do Supabase
+    await loadSettingsFromSupabase();
+    await loadFromSupabase();
 
+    // 2. Conecta a Sincronização em Tempo Real (Realtime)
+    setupRealtime();
+
+    // 3. Event Listeners
     if (currentDateInput) {
         currentDateInput.addEventListener('change', (e) => {
             selectedDate = e.target.value;
@@ -66,8 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addPlayerForm) addPlayerForm.addEventListener('submit', handleAddPlayer);
     if (searchPlayerInput) searchPlayerInput.addEventListener('input', renderMainTable);
 
-    if (btnExport) btnExport.addEventListener('click', exportDataToJSON);
-    if (importFileInput) importFileInput.addEventListener('change', importDataFromJSON);
     if (btnResetDay) btnResetDay.addEventListener('click', handleResetDay);
 
     if (btnRankTotal) btnRankTotal.addEventListener('click', () => setRankingMode('total', btnRankTotal));
@@ -86,6 +82,81 @@ document.addEventListener('DOMContentLoaded', () => {
     renderApp();
 });
 
+/* ==========================================================================
+   INTEGRAÇÃO SUPABASE & REALTIME
+   ========================================================================== */
+
+async function loadSettingsFromSupabase() {
+    try {
+        const { data, error } = await supabase.from('guild_settings').select('*');
+        if (!error && data) {
+            const passSetting = data.find(s => s.setting_key === 'admin_password' || s.setting_key === 'admin_password_hash');
+            if (passSetting) adminPassword = passSetting.setting_value;
+
+            const nameSetting = data.find(s => s.setting_key === 'guild_name');
+            if (nameSetting) {
+                const el = document.getElementById('guildName');
+                if (el) el.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Guilda ${nameSetting.setting_value}`;
+            }
+        }
+    } catch (e) {
+        console.error("Erro ao carregar configurações:", e);
+    }
+}
+
+async function loadFromSupabase() {
+    try {
+        // Busca jogadores
+        const { data: playersData, error: pErr } = await supabase.from('players').select('*').order('name', { ascending: true });
+        if (pErr) throw pErr;
+
+        // Busca histórico de contribuições
+        const { data: contribsData, error: cErr } = await supabase.from('contributions').select('*');
+        if (cErr) throw cErr;
+
+        state.players = (playersData || []).map(p => {
+            const playerContribs = (contribsData || []).filter(c => c.player_id === p.id);
+            const dailyHistory = {};
+            const totalHistory = {};
+
+            playerContribs.forEach(c => {
+                const val = Number(c.daily_value ?? c.daily_contribution ?? 0);
+                dailyHistory[c.date_key] = val;
+                totalHistory[c.date_key] = Number(c.entered_total ?? 0);
+            });
+
+            return {
+                id: p.id,
+                name: p.name,
+                contribTotal: Number(p.contrib_total ?? p.contribTotal ?? 0),
+                contribSemanaAnterior: Number(p.contrib_semana_anterior ?? p.contribSemanaAnterior ?? 0),
+                dailyHistory,
+                totalHistory
+            };
+        });
+
+        renderApp();
+    } catch (e) {
+        console.error("Erro ao carregar do Supabase:", e);
+    }
+}
+
+function setupRealtime() {
+    supabase
+        .channel('schema-db-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, () => loadFromSupabase())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'contributions' }, () => loadFromSupabase())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'guild_settings' }, () => {
+            loadSettingsFromSupabase();
+            loadFromSupabase();
+        })
+        .subscribe();
+}
+
+/* ==========================================================================
+   AÇÕES DO ADMINISTRADOR (PERSISTIDAS NO SUPABASE)
+   ========================================================================== */
+
 function toggleAdminMode() {
     if (isAdmin) {
         isAdmin = false;
@@ -97,13 +168,13 @@ function toggleAdminMode() {
         renderApp();
     } else {
         const passwordInput = prompt("Digite a senha de Administrador para editar:");
-        if (passwordInput === ADMIN_PASSWORD) {
+        if (passwordInput === adminPassword) {
             isAdmin = true;
             document.body.classList.add('is-admin');
             btnAdminLogin.innerHTML = '<i class="fa-solid fa-unlock"></i> Modo Admin (Sair)';
             btnAdminLogin.classList.remove('btn-warning');
             btnAdminLogin.classList.add('btn-danger');
-            alert("Modo Administrador ativado! Agora você pode editar todas as informações.");
+            alert("Modo Administrador ativado!");
             renderApp();
         } else if (passwordInput !== null) {
             alert("Senha incorreta!");
@@ -116,40 +187,6 @@ function setRankingMode(mode, activeBtn) {
     [btnRankTotal, btnRankPrev, btnRankWeek].forEach(btn => btn && btn.classList.remove('active'));
     if (activeBtn) activeBtn.classList.add('active');
     renderRanking();
-}
-
-/* ==========================================================================
-   CARREGAMENTO DIRETO DO ARQUIVO DO REPOSITÓRIO (dados.json)
-   ========================================================================== */
-function loadFromLocalStorage() {
-    // Busca sempre o arquivo dados.json hospedado no GitHub
-    fetch('dados.json?t=' + Date.now()) // O '?t=' evita que o navegador faça cache do arquivo antigo
-        .then(response => {
-            if (!response.ok) throw new Error('Arquivo dados.json não encontrado no repositório');
-            return response.json();
-        })
-        .then(remoteData => {
-            if (remoteData && (remoteData.players || Array.isArray(remoteData))) {
-                state = {
-                    players: Array.isArray(remoteData) ? remoteData : remoteData.players,
-                    history: remoteData.history || {}
-                };
-                renderApp();
-            }
-        })
-        .catch(err => {
-            console.error('Erro ao carregar dados.json do repositório:', err);
-        });
-}
-
-function saveToLocalStorage() {
-    try {
-        const serialized = JSON.stringify(state);
-        localStorage.setItem(PRIMARY_KEY, serialized);
-        BACKUP_KEYS.forEach(key => localStorage.setItem(key, serialized));
-    } catch (e) {
-        console.error("Erro ao salvar no LocalStorage:", e);
-    }
 }
 
 function getWeekDates(dateString) {
@@ -169,56 +206,52 @@ function getWeekDates(dateString) {
     return weekDates;
 }
 
-function handleAddPlayer(e) {
+async function handleAddPlayer(e) {
     e.preventDefault();
     if (!isAdmin) return;
 
     const name = playerNameInput.value.trim();
     if (!name) return;
 
-    const newPlayer = {
-        id: 'p_' + Date.now(),
-        name: name,
-        contribTotal: 0,
-        contribSemanaAnterior: 0,
-        dailyHistory: {},
-        totalHistory: {},
-        prevWeekHistory: {}
-    };
+    const { error } = await supabase.from('players').insert([
+        { name, contrib_total: 0, contrib_semana_anterior: 0 }
+    ]);
 
-    if (!state.players) state.players = [];
-    state.players.push(newPlayer);
-    saveToLocalStorage();
-    playerNameInput.value = '';
-    renderApp();
+    if (error) {
+        alert("Erro ao adicionar jogador no banco.");
+        console.error(error);
+    } else {
+        playerNameInput.value = '';
+        await loadFromSupabase();
+    }
 }
 
-function editPlayer(id) {
+async function editPlayer(id) {
     if (!isAdmin) return;
     const player = state.players.find(p => p.id === id);
     if (!player) return;
 
     const newName = prompt("Edite o nome do jogador:", player.name);
     if (newName && newName.trim() !== "") {
-        player.name = newName.trim();
-        saveToLocalStorage();
-        renderApp();
+        const { error } = await supabase.from('players').update({ name: newName.trim() }).eq('id', id);
+        if (error) console.error("Erro ao editar nome:", error);
+        else await loadFromSupabase();
     }
 }
 
-function deletePlayer(id) {
+async function deletePlayer(id) {
     if (!isAdmin) return;
     const player = state.players.find(p => p.id === id);
     if (!player) return;
 
     if (confirm(`Excluir o jogador "${player.name}"?`)) {
-        state.players = state.players.filter(p => p.id !== id);
-        saveToLocalStorage();
-        renderApp();
+        const { error } = await supabase.from('players').delete().eq('id', id);
+        if (error) console.error("Erro ao excluir jogador:", error);
+        else await loadFromSupabase();
     }
 }
 
-function saveDailyInput(playerId, dateKey) {
+async function saveDailyInput(playerId, dateKey) {
     if (!isAdmin) return;
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
@@ -227,24 +260,31 @@ function saveDailyInput(playerId, dateKey) {
     if (!inputEl) return;
 
     const newEnteredTotal = parseInt(inputEl.value) || 0;
-
-    if (!player.dailyHistory) player.dailyHistory = {};
-    if (!player.totalHistory) player.totalHistory = {};
-
     const previousTotal = player.contribTotal || 0;
     let calculatedDaily = newEnteredTotal - previousTotal;
-
     if (calculatedDaily < 0) calculatedDaily = 0;
 
-    player.dailyHistory[dateKey] = calculatedDaily;
-    player.totalHistory[dateKey] = newEnteredTotal;
-    player.contribTotal = newEnteredTotal;
+    // 1. Salva na tabela contributions (upsert por player_id e date_key)
+    const { error: cErr } = await supabase.from('contributions').upsert({
+        player_id: playerId,
+        date_key: dateKey,
+        entered_total: newEnteredTotal,
+        daily_value: calculatedDaily
+    }, { onConflict: 'player_id, date_key' });
 
-    saveToLocalStorage();
-    renderApp();
+    if (cErr) console.error("Erro ao salvar contribuição:", cErr);
+
+    // 2. Atualiza a contribuição total do jogador
+    const { error: pErr } = await supabase.from('players').update({
+        contrib_total: newEnteredTotal
+    }).eq('id', playerId);
+
+    if (pErr) console.error("Erro ao atualizar total:", pErr);
+
+    await loadFromSupabase();
 }
 
-function updateMainPlayerTotals(playerId) {
+async function updateMainPlayerTotals(playerId) {
     if (!isAdmin) return;
     const player = state.players.find(p => p.id === playerId);
     if (!player) return;
@@ -252,28 +292,61 @@ function updateMainPlayerTotals(playerId) {
     const totEl = document.getElementById(`tot_${playerId}`);
     const prevEl = document.getElementById(`prev_${playerId}`);
 
-    if (totEl) player.contribTotal = parseInt(totEl.value) || 0;
-    if (prevEl) player.contribSemanaAnterior = parseInt(prevEl.value) || 0;
+    const newTotal = totEl ? (parseInt(totEl.value) || 0) : player.contribTotal;
+    const newPrev = prevEl ? (parseInt(prevEl.value) || 0) : player.contribSemanaAnterior;
 
-    saveToLocalStorage();
-    renderApp();
+    const { error } = await supabase.from('players').update({
+        contrib_total: newTotal,
+        contrib_semana_anterior: newPrev
+    }).eq('id', playerId);
+
+    if (error) console.error("Erro ao atualizar totais do jogador:", error);
+    else await loadFromSupabase();
 }
 
-function handleResetDay() {
+async function handleResetDay() {
     if (!isAdmin) return;
     if (confirm(`Deseja zerar os registros da data ${selectedDate}?`)) {
-        (state.players || []).forEach(p => {
-            if (p.dailyHistory) delete p.dailyHistory[selectedDate];
-        });
-        saveToLocalStorage();
-        renderApp();
+        const { error } = await supabase.from('contributions').delete().eq('date_key', selectedDate);
+        if (error) console.error("Erro ao zerar o dia:", error);
+        else await loadFromSupabase();
     }
 }
+
+/* ==========================================================================
+   RENDERIZAÇÃO E REGRAS DE CORES
+   ========================================================================== */
 
 function renderApp() {
     renderMainTable();
     renderRanking();
     renderStats();
+    updateHeaderColors();
+}
+
+function updateHeaderColors() {
+    const weekDates = getWeekDates(selectedDate);
+    const headerCells = document.querySelectorAll('#mainTableHeaderRow th[data-weekday]');
+
+    headerCells.forEach(cell => {
+        const weekdayIndex = parseInt(cell.getAttribute('data-weekday'));
+        const dateKey = weekDates[weekdayIndex];
+
+        // Regra: Verifica se existe QUALQUER contribuição maior que zero no dia para os jogadores
+        const hasPositiveContrib = (state.players || []).some(p => {
+            const val = p.dailyHistory ? (p.dailyHistory[dateKey] || 0) : 0;
+            return val > 0;
+        });
+
+        // Aplicação direta da cor verde (se > 0) ou vermelha (se == 0)
+        if (hasPositiveContrib) {
+            cell.style.color = '#2ecc71'; // Verde
+            cell.style.fontWeight = 'bold';
+        } else {
+            cell.style.color = '#e74c3c'; // Vermelho
+            cell.style.fontWeight = 'normal';
+        }
+    });
 }
 
 function renderMainTable() {
@@ -301,15 +374,15 @@ function renderMainTable() {
                     <td>
                         <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
                             <input type="number" class="input-sm" id="day_input_${player.id}_${dateKey}" placeholder="Novo Tot." style="width:75px;">
-                            <button class="btn btn-primary btn-sm" onclick="saveDailyInput('${player.id}', '${dateKey}')" title="Calcular Dia">
+                            <button class="btn btn-primary btn-sm" onclick="saveDailyInput('${player.id}', '${dateKey}')" title="Calcular e Salvar">
                                 <i class="fa-solid fa-check"></i>
                             </button>
-                            <small style="color:var(--primary-gold); font-size:0.75rem;">+${dailyVal.toLocaleString()}</small>
+                            <small style="color:${dailyVal > 0 ? '#2ecc71' : 'var(--primary-gold)'}; font-size:0.75rem;">+${dailyVal.toLocaleString()}</small>
                         </div>
                     </td>
                 `;
             } else {
-                return `<td>+${dailyVal.toLocaleString()}</td>`;
+                return `<td style="color:${dailyVal > 0 ? '#2ecc71' : 'inherit'};">+${dailyVal.toLocaleString()}</td>`;
             }
         }).join('');
 
@@ -448,48 +521,6 @@ function openPlayerSummary(playerId) {
     `;
 
     playerModal.style.display = 'flex';
-}
-
-function exportDataToJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `ddtank_guild_v3_backup_${selectedDate}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-}
-
-function importDataFromJSON(e) {
-    if (!isAdmin) return;
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const fileReader = new FileReader();
-    fileReader.onload = function (event) {
-        try {
-            const importedData = JSON.parse(event.target.result);
-            let playersToImport = Array.isArray(importedData) ? importedData : (importedData.players || []);
-
-            if (playersToImport.length > 0) {
-                if (confirm(`Importar ${playersToImport.length} jogadores?`)) {
-                    state = {
-                        players: playersToImport,
-                        history: importedData.history || {}
-                    };
-                    saveToLocalStorage();
-                    renderApp();
-                    alert("Dados importados com sucesso!");
-                }
-            } else {
-                alert("Nenhum jogador encontrado no arquivo.");
-            }
-        } catch (error) {
-            alert("Erro ao ler o arquivo JSON.");
-        }
-        e.target.value = '';
-    };
-    fileReader.readAsText(file);
 }
 
 function escapeHTML(str) {
