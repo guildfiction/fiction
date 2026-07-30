@@ -3,7 +3,7 @@
  */
 
 let isAdmin = false;
-let adminPassword = "1234"; // Senha padrão do Administrador
+let adminPassword = "fiction1234"; // Senha padrão do Administrador
 
 let state = {
     players: []
